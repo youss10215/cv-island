@@ -13,7 +13,7 @@ const App = () => {
       camera={{ position: [-17, 31, 33] }}
     >
       <pointLight position={[0, 10, 0]} />
-      {/* <ambientLight intensity={0.1} /> */}
+      <ambientLight intensity={0.3} />
       <OrbitControls />
       <color attach="background" args={['#FFEECC']} />
       <PerspectiveCamera fov={45} />
