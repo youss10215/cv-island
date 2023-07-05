@@ -17,20 +17,20 @@ const Scene = () => {
       <pointLight
         ref={lightRef}
         color={new THREE.Color("#FFCB8E").convertSRGBToLinear()}
-        intensity={3}
+        intensity={2}
         distance={200}
-        position={[10, 20, 0]}
+        position={[10, 20, 10]}
         castShadow
         shadow-mapSize-height={512}
         shadow-mapSize-width={512}
         shadow-camera-near={0.5}
         shadow-camera-far={500}
       />
-      <ambientLight color={new THREE.Color("#ffe8bc").convertSRGBToLinear()} intensity={0.2} />
+      <ambientLight color={new THREE.Color("#ffe8bc").convertSRGBToLinear()} intensity={0.4} />
       <OrbitControls target={[0, 0, 0]} />
       <color attach="background" args={['#FFEECC']} />
       <PerspectiveCamera fov={45} />
-      <Environment preset='city' />
+      {/* <Environment preset='sunset' /> */}
       <Hexagons i={SIDE} j={SIDE} />
       {/* <EffectComposer> */}
         <ToneMapping

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import * as THREE from "three";
 
-import { useTexture } from "@react-three/drei";
+import { useEnvironment, useTexture } from "@react-three/drei";
 
 const HexagonsMeshes = ({ hexagons, size }) => {
   const [stoneTexture] = useTexture(["/textures/stone.png"]);
@@ -9,6 +9,8 @@ const HexagonsMeshes = ({ hexagons, size }) => {
   const [grassTexture] = useTexture(["/textures/grass.png"]);
   const [sandTexture] = useTexture(["/textures/sand.png"]);
   const [dirt2Texture] = useTexture(["/textures/dirt2.png"]);
+  
+  const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
 
   const geo = useMemo(() => {
     return [
@@ -16,7 +18,8 @@ const HexagonsMeshes = ({ hexagons, size }) => {
         key: "stone",
         material: new THREE.MeshPhysicalMaterial({
           map: stoneTexture,
-          envMapIntensity: 0.75,
+          envMap,
+          envMapIntensity: 0.7,
           flatShading: true,
         }),
       },
@@ -24,7 +27,8 @@ const HexagonsMeshes = ({ hexagons, size }) => {
         key: "dirt",
         material: new THREE.MeshPhysicalMaterial({
           map: dirtTexture,
-          envMapIntensity: 0.75,
+          envMap,
+          envMapIntensity: 0.7,
           flatShading: true,
         }),
       },
@@ -32,7 +36,8 @@ const HexagonsMeshes = ({ hexagons, size }) => {
         key: "grass",
         material: new THREE.MeshPhysicalMaterial({
           map: grassTexture,
-          envMapIntensity: 0.75,
+          envMap,
+          envMapIntensity: 0.7,
           flatShading: true,
         }),
       },
@@ -40,7 +45,8 @@ const HexagonsMeshes = ({ hexagons, size }) => {
         key: "sand",
         material: new THREE.MeshPhysicalMaterial({
           map: sandTexture,
-          envMapIntensity: 0.75,
+          envMap,
+          envMapIntensity: 0.7,
           flatShading: true,
         }),
       },
@@ -48,7 +54,8 @@ const HexagonsMeshes = ({ hexagons, size }) => {
         key: "dirt2",
         material: new THREE.MeshPhysicalMaterial({
           map: dirt2Texture,
-          envMapIntensity: 0.75,
+          envMap,
+          envMapIntensity: 0.7,
           flatShading: true,
         }),
       },
