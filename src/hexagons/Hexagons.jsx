@@ -19,8 +19,8 @@ const SAND_HEIGHT = MAX_HEIGHT * 0.3;
 const DIRT2_HEIGHT = MAX_HEIGHT * 0;
 const HEXAGON = new THREE.CylinderGeometry(1, 1, 0, 6, 1, false);
 
-const SIZE_X = 1.77;
-const SIZE_Y = 1.535;
+const SIZE_X = 1.7;
+const SIZE_Y = 1.5;
 
 const tilePosition = (tileX, tileY) => {
   return new THREE.Vector3(
