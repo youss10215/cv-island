@@ -9,7 +9,7 @@ const HexagonsMeshes = ({ hexagons, size }) => {
   const [grassTexture] = useTexture(["/textures/grass.png"]);
   const [sandTexture] = useTexture(["/textures/sand.png"]);
   const [dirt2Texture] = useTexture(["/textures/dirt2.png"]);
-  
+
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
 
   const geo = useMemo(() => {
@@ -65,9 +65,10 @@ const HexagonsMeshes = ({ hexagons, size }) => {
   const renderHexagons = useMemo(() => {
     return geo.map(({ key, material }, i) => {
       return (
-        <instancedMesh
+        <mesh
           key={`${key}-${i}`}
-          args={[hexagons[key], material, size]}
+          args={[hexagons[key], null, size]}
+          material={material}
           castShadow
           receiveShadow
         />
