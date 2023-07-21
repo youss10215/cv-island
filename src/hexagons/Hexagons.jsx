@@ -54,8 +54,8 @@ const Hexagons = React.memo(({ i, j }) => {
     let counter = 0;
 
     const simplex = new SimplexNoise();
-    for (let x = -SIDE; x < i; x++) {
-      for (let z = -SIDE; z < j; z++) {
+    for (let x = -i; x < i; x++) {
+      for (let z = -j; z < j; z++) {
         const noise = (simplex.noise2D(x * 0.1, z * 0.1) + 1) * 0.5;
         const height = Math.pow(noise, 1.5) * MAX_HEIGHT;
 
@@ -65,7 +65,7 @@ const Hexagons = React.memo(({ i, j }) => {
           dispatch({ type: SET_SIZE, payload: { counter } });
         }
 
-        if (newPosition.length() > 16) {
+        if (newPosition.length() > i + 1) {
           continue;
         }
 
