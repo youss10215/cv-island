@@ -42,6 +42,8 @@ const Scene = () => {
 
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
   const [waterTexture] = useTexture(["/textures/water.png"]);
+  const [dirtTexture] = useTexture(["/textures/dirt.png"]);
+  const [dirt2Texture] = useTexture(["/textures/dirt2.png"]);
   const seaTexture = new THREE.MeshPhysicalMaterial({
     envMap,
     color: new THREE.Color(seaColor).convertLinearToSRGB().multiplyScalar(3),
@@ -54,6 +56,20 @@ const Scene = () => {
     metalness: 0.025,
     roughnessMap: waterTexture,
     metalnessMap: waterTexture,
+  });
+
+  const mapContainerTexture = new THREE.MeshPhysicalMaterial({
+    envMap,
+    map: dirtTexture,
+    envMapIntensity: 0.2,
+    side: THREE.DoubleSide,
+  });
+
+  const mapFloorTexture = new THREE.MeshPhysicalMaterial({
+    envMap,
+    map: dirt2Texture,
+    envMapIntensity: 0.1,
+    side: THREE.DoubleSide,
   });
 
   return (
@@ -81,6 +97,19 @@ const Scene = () => {
       <Hexagons i={sides} j={sides} />
       <mesh material={seaTexture} position={[0, MAX_HEIGHT * 0.1, 0]}>
         <cylinderGeometry args={[17, 17, MAX_HEIGHT * 0.2, 50]} />
+      </mesh>
+      <mesh
+        material={mapContainerTexture}
+        position={[0, MAX_HEIGHT * 0.125, 0]}
+      >
+        <cylinderGeometry args={[17.1, 17.1, MAX_HEIGHT * 0.25, 50, 1, true]} />
+      </mesh>
+      <mesh
+        material={mapFloorTexture}
+        position={[0, -MAX_HEIGHT * 0.05, 0]}
+        receiveShadow
+      >
+        <cylinderGeometry args={[18.5, 18.5, MAX_HEIGHT * 0.1, 50]} />
       </mesh>
       {/* <EffectComposer> */}
       <ToneMapping
