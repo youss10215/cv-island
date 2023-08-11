@@ -7,8 +7,6 @@ import "./styles/style.css";
 import Scene from "./Scene";
 import { useControls } from "leva";
 
-export const SIDE = 15;
-
 const App = () => {
   const { toneMappingExposure } = useControls({ toneMappingExposure: 0.8 });
   return (

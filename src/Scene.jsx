@@ -11,7 +11,6 @@ import * as THREE from "three";
 import { useControls } from "leva";
 
 import Hexagons from "./hexagons/Hexagons";
-import { SIDE } from "./App";
 import { MAX_HEIGHT } from "./hexagons/Hexagons";
 import {
   EffectComposer,
@@ -96,20 +95,24 @@ const Scene = () => {
       {/* <Environment preset='sunset' /> */}
       <Hexagons i={sides} j={sides} />
       <mesh material={seaTexture} position={[0, MAX_HEIGHT * 0.1, 0]}>
-        <cylinderGeometry args={[17, 17, MAX_HEIGHT * 0.2, 50]} />
+        <cylinderGeometry args={[sides + 2, sides + 2, MAX_HEIGHT * 0.2, 50]} />
       </mesh>
       <mesh
         material={mapContainerTexture}
         position={[0, MAX_HEIGHT * 0.125, 0]}
       >
-        <cylinderGeometry args={[17.1, 17.1, MAX_HEIGHT * 0.25, 50, 1, true]} />
+        <cylinderGeometry
+          args={[sides + 2.1, sides + 2.1, MAX_HEIGHT * 0.25, 50, 1, true]}
+        />
       </mesh>
       <mesh
         material={mapFloorTexture}
         position={[0, -MAX_HEIGHT * 0.05, 0]}
         receiveShadow
       >
-        <cylinderGeometry args={[18.5, 18.5, MAX_HEIGHT * 0.1, 50]} />
+        <cylinderGeometry
+          args={[sides + 3.5, sides + 3.5, MAX_HEIGHT * 0.1, 50]}
+        />
       </mesh>
       {/* <EffectComposer> */}
       <ToneMapping
