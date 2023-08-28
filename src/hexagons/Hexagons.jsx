@@ -110,7 +110,7 @@ const Hexagons = React.memo(({ i, j }) => {
       geo = BufferGeometryUtils.mergeGeometries([geo, cloudGeo]);
     }
 
-    return <mesh args={[geo]} material={cloudMaterial} />;
+    return <mesh args={[geo]} material={cloudMaterial} castShadow={true} />;
   }, []);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import {
   useEnvironment,
   useHelper,
   useTexture,
+  useAnimations,
 } from "@react-three/drei";
 import * as THREE from "three";
 import { useControls } from "leva";
@@ -19,10 +20,14 @@ import {
 } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 
+import Seagulls from "./models/Seagulls";
+
 const defaultProps = {
-  pointLightColor: "#FFCB8E",
+  backgrounSceneColor: "#d9e8f2",
+  pointLightColor: "#dbdbda",
   pointLightIntensity: 2,
   pointLightPosition: [10, 20, 10],
+  seagullsPosition: [-17, 10, -11],
   sides: 15,
   seaColor: "#10579d",
 };
@@ -30,9 +35,11 @@ const defaultProps = {
 const Scene = () => {
   const lightRef = useRef();
   const {
+    backgrounSceneColor,
     pointLightColor,
     pointLightIntensity,
     pointLightPosition,
+    seagullsPosition,
     sides,
     seaColor,
   } = useControls(defaultProps);
@@ -90,9 +97,10 @@ const Scene = () => {
         intensity={0.4}
       />
       <OrbitControls target={[0, 0, 0]} />
-      <color attach="background" args={["#FFEECC"]} />
+      <color attach="background" args={[backgrounSceneColor]} />
       <PerspectiveCamera fov={45} />
       {/* <Environment preset='sunset' /> */}
+      <Seagulls position={seagullsPosition} />
       <Hexagons i={sides} j={sides} />
       <mesh material={seaTexture} position={[0, MAX_HEIGHT * 0.1, 0]}>
         <cylinderGeometry args={[sides + 2, sides + 2, MAX_HEIGHT * 0.2, 50]} />
