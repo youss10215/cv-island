@@ -5,9 +5,12 @@ import "../styles/style.css";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import SimplexNoise from "https://cdn.skypack.dev/simplex-noise@3.0.0";
 
-import reducer, { SET_HEGAGONS, SET_SIZE } from "./reducer";
+import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
 import HexagonsMeshes from "../hexagons-meshes/HexagonsMeshes";
-import { useEnvironment } from "@react-three/drei";
+import { Instance, Instances, useEnvironment } from "@react-three/drei";
+import SnowTree from "../models/SnowTree";
+import PalmTree from "../models/PalmTree";
+import PineTree from "../models/PineTree";
 
 export const MAX_HEIGHT = 10;
 
@@ -61,6 +64,8 @@ const Hexagons = React.memo(({ i, j }) => {
       grass: HEXAGON,
       sand: HEXAGON,
       dirt2: HEXAGON,
+      snowtree: <PineTree position={[0, 0, 0]} />,
+      snowTreePositions: [],
     },
     size: 1,
   };
@@ -75,6 +80,8 @@ const Hexagons = React.memo(({ i, j }) => {
   let grass = HEXAGON;
   let sand = HEXAGON;
   let dirt2 = HEXAGON;
+  let snowtree = <PineTree position={[0, 0, 0]} />;
+  let snowTreePositions = [];
 
   const clouds = useMemo(() => {
     let geo = new THREE.SphereGeometry(0, 0, 0);
@@ -112,6 +119,12 @@ const Hexagons = React.memo(({ i, j }) => {
 
     return <mesh args={[geo]} material={cloudMaterial} castShadow={true} />;
   }, []);
+
+  const renderTrees = useMemo(() => {
+    return (state.snowTreePositions || []).map((position, i) => {
+      return <PineTree key={i} position={position} />;
+    });
+  }, [snowTreePositions]);
 
   useEffect(() => {
     let counter = 0;
@@ -163,6 +176,12 @@ const Hexagons = React.memo(({ i, j }) => {
           }
         } else if (height > GRASS_HEIGHT) {
           grass = BufferGeometryUtils.mergeGeometries([grass, hexagonStone]);
+          // if (Math.random() > 0.9) {
+          snowtree = (
+            <PineTree position={[newPosition.x, height, newPosition.y]} />
+          );
+          snowTreePositions.push(snowtree.props.position);
+          // }
         } else if (height > SAND_HEIGHT) {
           sand = BufferGeometryUtils.mergeGeometries([sand, hexagonStone]);
 
@@ -189,7 +208,15 @@ const Hexagons = React.memo(({ i, j }) => {
           grass,
           sand,
           dirt2,
+          snowtree,
         },
+      },
+    });
+
+    dispatch({
+      type: SET_POSITION,
+      payload: {
+        snowTreePositions,
       },
     });
   }, [i, j]);
@@ -197,7 +224,22 @@ const Hexagons = React.memo(({ i, j }) => {
   return (
     <>
       {clouds}
+      {renderTrees}
       <HexagonsMeshes hexagons={hexagons} size={size} />
+      {/* <Instances
+        limit={1000} // Optional: max amount of items (for calculating buffer size)
+        range={1000} // Optional: draw-range
+      >
+        <meshStandardMaterial />
+        <Instance
+          color="red"
+          scale={2}
+          position={[-17, 10, -11]}
+          rotation={[Math.PI / 3, 0, 0]}
+        >
+
+        </Instance>
+      </Instances> */}
     </>
   );
 });
