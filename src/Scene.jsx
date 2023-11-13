@@ -21,13 +21,14 @@ import {
 import { BlendFunction } from "postprocessing";
 
 import Seagulls from "./models/Seagulls";
+import Cloud from "./models/Cloud";
 
 const defaultProps = {
   backgrounSceneColor: "#d9e8f2",
   pointLightColor: "#dbdbda",
-  pointLightIntensity: 2,
-  pointLightPosition: [10, 20, 10],
-  seagullsPosition: [-17, 10, -11],
+  pointLightIntensity: 4,
+  pointLightPosition: [0, 20, -10],
+  seagullsPosition: [-7, 12, 6],
   sides: 15,
   seaColor: "#10579d",
 };
@@ -48,8 +49,9 @@ const Scene = () => {
 
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
   const [waterTexture] = useTexture(["/textures/water.png"]);
-  const [dirtTexture] = useTexture(["/textures/dirt.png"]);
-  const [dirt2Texture] = useTexture(["/textures/dirt2.png"]);
+  const [dirtTexture] = useTexture(["/textures/dirt.jpg"]);
+  const [dirt2Texture] = useTexture(["/textures/mapFloor.jpg"]);
+  const [cloudTexture] = useTexture(["/textures/cloud.jpg"]);
   const seaTexture = new THREE.MeshPhysicalMaterial({
     envMap,
     color: new THREE.Color(seaColor).convertLinearToSRGB().multiplyScalar(3),
@@ -78,6 +80,11 @@ const Scene = () => {
     side: THREE.DoubleSide,
   });
 
+  const cloudMaterial = new THREE.MeshPhysicalMaterial({
+    envMap,
+    envMapIntensity: 0.75,
+  });
+
   return (
     <>
       <pointLight
@@ -102,7 +109,12 @@ const Scene = () => {
       {/* <Environment preset='sunset' /> */}
       <Seagulls position={seagullsPosition} />
       <Hexagons i={sides} j={sides} />
-      <mesh material={seaTexture} position={[0, MAX_HEIGHT * 0.1, 0]}>
+      <mesh
+        material={seaTexture}
+        position={[0, MAX_HEIGHT * 0.1, 0]}
+        castShadow={true}
+        receiveShadow={true}
+      >
         <cylinderGeometry args={[sides + 2, sides + 2, MAX_HEIGHT * 0.2, 50]} />
       </mesh>
       <mesh

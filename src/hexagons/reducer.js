@@ -21,11 +21,11 @@ export default (state, { type, payload }) => {
       };
     }
     case SET_POSITION: {
-      const { snowTreePositions, snowtree } = payload;
+      const { treePositions, tree } = payload;
       return {
         ...state,
-        snowTreePositions: [...snowTreePositions],
-        snowtree
+        treePositions: [...treePositions],
+        tree
       };
     }
     default:

@@ -2,13 +2,16 @@ import React, { useMemo } from "react";
 import * as THREE from "three";
 
 import { useEnvironment, useTexture } from "@react-three/drei";
+import { useControls } from "leva";
 
 const HexagonsMeshes = ({ hexagons, size }) => {
-  const [stoneTexture] = useTexture(["/textures/stone.png"]);
-  const [dirtTexture] = useTexture(["/textures/dirt.png"]);
-  const [grassTexture] = useTexture(["/textures/grass.png"]);
-  const [sandTexture] = useTexture(["/textures/sand.png"]);
-  const [dirt2Texture] = useTexture(["/textures/dirt2.png"]);
+  const [stoneTexture] = useTexture(["/textures/stone.jpg"]);
+  const [dirtTexture] = useTexture(["/textures/dirt.jpg"]);
+  const [grassTexture] = useTexture(["/textures/grass.jpg"]);
+  const [sandTexture] = useTexture(["/textures/sand.jpg"]);
+  const [dirt2Texture] = useTexture(["/textures/dirt2.jpg"]);
+
+  const { lightIntensity } = useControls({ lightMapIntensity: 0.4 });
 
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
 
@@ -21,6 +24,7 @@ const HexagonsMeshes = ({ hexagons, size }) => {
           envMap,
           envMapIntensity: 0.7,
           flatShading: true,
+          lightIntensity,
         }),
       },
       {
@@ -30,6 +34,7 @@ const HexagonsMeshes = ({ hexagons, size }) => {
           envMap,
           envMapIntensity: 0.7,
           flatShading: true,
+          lightIntensity,
         }),
       },
       {
@@ -39,6 +44,7 @@ const HexagonsMeshes = ({ hexagons, size }) => {
           envMap,
           envMapIntensity: 0.7,
           flatShading: true,
+          lightIntensity,
         }),
       },
       {
@@ -48,6 +54,7 @@ const HexagonsMeshes = ({ hexagons, size }) => {
           envMap,
           envMapIntensity: 0.7,
           flatShading: true,
+          lightIntensity,
         }),
       },
       {
@@ -57,6 +64,7 @@ const HexagonsMeshes = ({ hexagons, size }) => {
           envMap,
           envMapIntensity: 0.7,
           flatShading: true,
+          lightIntensity,
         }),
       },
     ];
