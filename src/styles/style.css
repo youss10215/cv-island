@@ -1,8 +1,13 @@
-html, body {
+html,
+body {
   margin: 0;
 }
 
 canvas {
   width: 100vw;
   height: 100vh;
+}
+
+.canvas-island {
+  filter: blur(4px);
 }

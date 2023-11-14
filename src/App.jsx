@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { Stats } from "@react-three/drei";
@@ -8,12 +8,21 @@ import Scene from "./Scene";
 import { useControls } from "leva";
 
 const App = () => {
-  const { toneMappingExposure } = useControls({ toneMappingExposure: 0.8 });
+  const { toneMappingExposure, cameraPosition } = useControls({
+    toneMappingExposure: 0.8,
+    cameraPosition: [-20, 16, 28],
+  });
+  const [isBlurred, setIsBlurred] = useState(false);
+
+  const handleBlur = useCallback(() => {
+    setIsBlurred(!isBlurred);
+  }, [isBlurred]);
+
   return (
     <>
       <Canvas
-        // camera={{ position: [0, 0, 50] }}
-        camera={{ position: [-17, 20, 23] }}
+        className={isBlurred ? "canvas-island" : ""}
+        camera={{ position: cameraPosition }}
         shadows
         gl={{
           antialias: true,
@@ -25,7 +34,7 @@ const App = () => {
           outputEncoding: THREE.SRGBColorSpace,
         }}
       >
-        <Scene />
+        <Scene handleBlur={handleBlur} />
         <Stats />
       </Canvas>
     </>

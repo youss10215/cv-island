@@ -9,6 +9,7 @@ import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
 import HexagonsMeshes from "../hexagons-meshes/HexagonsMeshes";
 import { useEnvironment } from "@react-three/drei";
 import PineTree from "../models/PineTree";
+import Rock from "../models/Rock";
 
 export const MAX_HEIGHT = 10;
 
@@ -29,16 +30,6 @@ const tilePosition = (tileX, tileY) => {
   );
 };
 
-const rock = (height, position) => {
-  const px = Math.random() * 0.4;
-  const pz = Math.random() * 0.4;
-
-  const geo = new THREE.SphereGeometry(Math.random() * 0.3 + 0.1, 7, 7);
-  geo.translate(position.x + px, height, position.y + pz);
-
-  return geo;
-};
-
 const Hexagons = React.memo(({ i, j }) => {
   const initialState = {
     hexagons: {
@@ -49,6 +40,8 @@ const Hexagons = React.memo(({ i, j }) => {
       dirt2: HEXAGON,
       tree: <PineTree position={[0, 0, 0]} />,
       treePositions: [],
+      rock: <Rock position={[0, 0, 0]} />,
+      rockPositions: [],
     },
     size: 1,
   };
@@ -65,6 +58,8 @@ const Hexagons = React.memo(({ i, j }) => {
   let dirt2 = HEXAGON;
   let tree = <PineTree position={[0, 0, 0]} />;
   let treePositions = [];
+  let rock = <Rock position={[0, 0, 0]} />;
+  let rockPositions = [];
 
   const clouds = useMemo(() => {
     let geo = new THREE.SphereGeometry(0, 0, 0);
@@ -108,6 +103,12 @@ const Hexagons = React.memo(({ i, j }) => {
     });
   }, [treePositions]);
 
+  const renderRocks = useMemo(() => {
+    return (state.rockPositions || []).map((position, i) => {
+      return <Rock key={i} position={position} />;
+    });
+  }, [rockPositions]);
+
   useEffect(() => {
     let counter = 0;
 
@@ -140,13 +141,6 @@ const Hexagons = React.memo(({ i, j }) => {
 
         if (height > STONE_HEIGHT) {
           stone = BufferGeometryUtils.mergeGeometries([stone, hexagonStone]);
-
-          if (Math.random() > STONE_HEIGHT) {
-            stone = BufferGeometryUtils.mergeGeometries([
-              stone,
-              rock(height, newPosition),
-            ]);
-          }
         } else if (height > DIRT_HEIGHT) {
           dirt = BufferGeometryUtils.mergeGeometries([dirt, hexagonStone]);
         } else if (height > GRASS_HEIGHT) {
@@ -160,11 +154,9 @@ const Hexagons = React.memo(({ i, j }) => {
         } else if (height > SAND_HEIGHT) {
           sand = BufferGeometryUtils.mergeGeometries([sand, hexagonStone]);
 
-          if (Math.random() > 0.8 && stone) {
-            stone = BufferGeometryUtils.mergeGeometries([
-              stone,
-              rock(height, newPosition),
-            ]);
+          if (Math.random() > 0.9) {
+            rock = <Rock position={[newPosition.x, height, newPosition.y]} />;
+            rockPositions.push(rock.props.position);
           }
         } else if (height > DIRT2_HEIGHT) {
           dirt2 = BufferGeometryUtils.mergeGeometries([dirt2, hexagonStone]);
@@ -184,6 +176,7 @@ const Hexagons = React.memo(({ i, j }) => {
           sand,
           dirt2,
           tree,
+          rock,
         },
       },
     });
@@ -192,6 +185,7 @@ const Hexagons = React.memo(({ i, j }) => {
       type: SET_POSITION,
       payload: {
         treePositions,
+        rockPositions,
       },
     });
   }, [i, j]);
@@ -200,21 +194,8 @@ const Hexagons = React.memo(({ i, j }) => {
     <>
       {clouds}
       {renderTrees}
+      {renderRocks}
       <HexagonsMeshes hexagons={hexagons} size={size} />
-      {/* <Instances
-        limit={1000} // Optional: max amount of items (for calculating buffer size)
-        range={1000} // Optional: draw-range
-      >
-        <meshStandardMaterial />
-        <Instance
-          color="red"
-          scale={2}
-          position={[-17, 10, -11]}
-          rotation={[Math.PI / 3, 0, 0]}
-        >
-
-        </Instance>
-      </Instances> */}
     </>
   );
 });

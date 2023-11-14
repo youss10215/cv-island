@@ -1,27 +1,21 @@
-import { useRef } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import {
-  Environment,
   OrbitControls,
   PerspectiveCamera,
   useEnvironment,
   useHelper,
   useTexture,
-  useAnimations,
 } from "@react-three/drei";
 import * as THREE from "three";
 import { useControls } from "leva";
 
 import Hexagons from "./hexagons/Hexagons";
 import { MAX_HEIGHT } from "./hexagons/Hexagons";
-import {
-  EffectComposer,
-  HueSaturation,
-  ToneMapping,
-} from "@react-three/postprocessing";
+import { ToneMapping } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 
 import Seagulls from "./models/Seagulls";
-import Cloud from "./models/Cloud";
+import Sign from "./models/Sign";
 
 const defaultProps = {
   backgrounSceneColor: "#d9e8f2",
@@ -29,18 +23,21 @@ const defaultProps = {
   pointLightIntensity: 4,
   pointLightPosition: [0, 20, -10],
   seagullsPosition: [-7, 12, 6],
+  signPosition: [-10.8, 0, 14.6],
   sides: 15,
   seaColor: "#10579d",
 };
 
-const Scene = () => {
+const Scene = ({ handleBlur }) => {
   const lightRef = useRef();
+
   const {
     backgrounSceneColor,
     pointLightColor,
     pointLightIntensity,
     pointLightPosition,
     seagullsPosition,
+    signPosition,
     sides,
     seaColor,
   } = useControls(defaultProps);
@@ -51,7 +48,6 @@ const Scene = () => {
   const [waterTexture] = useTexture(["/textures/water.png"]);
   const [dirtTexture] = useTexture(["/textures/dirt.jpg"]);
   const [dirt2Texture] = useTexture(["/textures/mapFloor.jpg"]);
-  const [cloudTexture] = useTexture(["/textures/cloud.jpg"]);
   const seaTexture = new THREE.MeshPhysicalMaterial({
     envMap,
     color: new THREE.Color(seaColor).convertLinearToSRGB().multiplyScalar(3),
@@ -80,11 +76,6 @@ const Scene = () => {
     side: THREE.DoubleSide,
   });
 
-  const cloudMaterial = new THREE.MeshPhysicalMaterial({
-    envMap,
-    envMapIntensity: 0.75,
-  });
-
   return (
     <>
       <pointLight
@@ -108,6 +99,7 @@ const Scene = () => {
       <PerspectiveCamera fov={45} />
       {/* <Environment preset='sunset' /> */}
       <Seagulls position={seagullsPosition} />
+      <Sign onClick={handleBlur} position={signPosition} />
       <Hexagons i={sides} j={sides} />
       <mesh
         material={seaTexture}
