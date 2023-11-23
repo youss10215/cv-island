@@ -7,6 +7,8 @@ import "./styles/style.css";
 import Scene from "./Scene";
 import { useControls } from "leva";
 
+import Text from "./models/Text";
+
 const App = () => {
   const { toneMappingExposure, cameraPosition } = useControls({
     toneMappingExposure: 0.8,
@@ -34,8 +36,11 @@ const App = () => {
           outputEncoding: THREE.SRGBColorSpace,
         }}
       >
-        <Scene handleBlur={handleBlur} />
+        <Scene handleBlur={handleBlur} isBlurred={isBlurred} />
         <Stats />
+      </Canvas>
+      <Canvas className="description" camera={{ position: cameraPosition }}>
+        {isBlurred && <Text />}
       </Canvas>
     </>
   );

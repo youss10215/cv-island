@@ -9,5 +9,11 @@ canvas {
 }
 
 .canvas-island {
-  filter: blur(4px);
+  filter: blur(5px);
+}
+
+body #root .description {
+  position: absolute !important;
+  pointer-events: none !important;
+  top: 0;
 }
