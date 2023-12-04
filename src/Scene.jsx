@@ -1,5 +1,6 @@
 import React, { useRef, useState, useCallback } from "react";
 import {
+  Html,
   OrbitControls,
   PerspectiveCamera,
   useEnvironment,
@@ -16,14 +17,20 @@ import { BlendFunction } from "postprocessing";
 
 import Seagulls from "./models/Seagulls";
 import Sign from "./models/Sign";
+import { ArrowNav } from "./models/ArrowNav";
 
 const defaultProps = {
   backgrounSceneColor: "#d9e8f2",
   pointLightColor: "#dbdbda",
   pointLightIntensity: 4,
-  pointLightPosition: [0, 20, -10],
+  pointLightPosition1: [0, 20, -10],
+  pointLightPosition2: [-16, 20, 24],
   seagullsPosition: [-7, 12, 6],
   signPosition: [-10.8, 0, 14.6],
+  aboutMePosition: [-11, 4.4, 14.8],
+  aboutMeRotation: [0, -0.6, 0],
+  arrowPosition: [11, 4, 26],
+  arrowRotation: [1.95, -1.73, -1],
   sides: 15,
   seaColor: "#10579d",
 };
@@ -35,9 +42,14 @@ const Scene = ({ handleBlur }) => {
     backgrounSceneColor,
     pointLightColor,
     pointLightIntensity,
-    pointLightPosition,
+    pointLightPosition1,
+    pointLightPosition2,
     seagullsPosition,
+    arrowPosition,
     signPosition,
+    aboutMePosition,
+    aboutMeRotation,
+    arrowRotation,
     sides,
     seaColor,
   } = useControls(defaultProps);
@@ -76,6 +88,11 @@ const Scene = ({ handleBlur }) => {
     side: THREE.DoubleSide,
   });
 
+  const [white] = useTexture(["/textures/white.jpg"]);
+  const whiteMaterial = new THREE.MeshPhysicalMaterial({
+    map: white,
+  });
+
   return (
     <>
       <pointLight
@@ -83,7 +100,19 @@ const Scene = ({ handleBlur }) => {
         color={new THREE.Color(pointLightColor).convertSRGBToLinear()}
         intensity={pointLightIntensity}
         distance={200}
-        position={pointLightPosition}
+        position={pointLightPosition1}
+        castShadow
+        shadow-mapSize-height={512}
+        shadow-mapSize-width={512}
+        shadow-camera-near={0.5}
+        shadow-camera-far={500}
+      />
+      <pointLight
+        ref={lightRef}
+        color={new THREE.Color(pointLightColor).convertSRGBToLinear()}
+        intensity={pointLightIntensity}
+        distance={200}
+        position={pointLightPosition2}
         castShadow
         shadow-mapSize-height={512}
         shadow-mapSize-width={512}
@@ -100,6 +129,21 @@ const Scene = ({ handleBlur }) => {
       {/* <Environment preset='sunset' /> */}
       <Seagulls position={seagullsPosition} />
       <Sign onClick={handleBlur} position={signPosition} />
+      <Html
+        rotation={aboutMeRotation}
+        position={aboutMePosition}
+        transform
+        occlude
+      >
+        <div onClick={handleBlur} className="about-me">
+          Experience
+        </div>
+      </Html>
+      <ArrowNav
+        position={arrowPosition}
+        rotation={arrowRotation}
+        whiteMaterial={whiteMaterial}
+      />
       <Hexagons i={sides} j={sides} />
       <mesh
         material={seaTexture}

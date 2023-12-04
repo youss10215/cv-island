@@ -17,3 +17,17 @@ body #root .description {
   pointer-events: none !important;
   top: 0;
 }
+
+.about-me {
+  color: #ffffff;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+
+/** Handle LEVA */
+
+.leva-c-kWgxhW-bCBHqk-fill-false {
+  left: 20px;
+  top: 50px;
+}

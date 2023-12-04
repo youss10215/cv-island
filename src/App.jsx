@@ -15,7 +15,7 @@ import "./styles/style.css";
 const App = () => {
   const { toneMappingExposure, cameraPosition } = useControls({
     toneMappingExposure: 0.8,
-    cameraPosition: [-20, 16, 28],
+    cameraPosition: [-20, 10, 28],
   });
 
   const [isBlurred, setIsBlurred] = useState(false);
