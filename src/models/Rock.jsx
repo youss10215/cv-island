@@ -1,8 +1,13 @@
-import React, { useRef } from "react";
+import React, { useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
+import { useGraph } from "@react-three/fiber";
+import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
-export function Rock(props) {
-  const { nodes, materials } = useGLTF("/models/rock.gltf");
+export const Rock = (props) => {
+  const { scene, materials } = useGLTF("/models/rock.gltf");
+  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const { nodes } = useGraph(clone);
+
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={1.5}>
@@ -21,7 +26,7 @@ export function Rock(props) {
       </group>
     </group>
   );
-}
+};
 
 export default Rock;
 

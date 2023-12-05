@@ -8,8 +8,6 @@ import SimplexNoise from "https://cdn.skypack.dev/simplex-noise@3.0.0";
 import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
 import HexagonsMeshes from "../hexagons-meshes/HexagonsMeshes";
 import { useEnvironment } from "@react-three/drei";
-import PineTree from "../models/PineTree";
-import Rock from "../models/Rock";
 
 export const MAX_HEIGHT = 10;
 
@@ -30,7 +28,8 @@ const tilePosition = (tileX, tileY) => {
   );
 };
 
-const Hexagons = React.memo(({ i, j }) => {
+const Hexagons = React.memo(({ i, j, elements }) => {
+  const { SeasonTree, Bird, Rock } = elements;
   const initialState = {
     hexagons: {
       stone: HEXAGON,
@@ -38,9 +37,9 @@ const Hexagons = React.memo(({ i, j }) => {
       grass: HEXAGON,
       sand: HEXAGON,
       dirt2: HEXAGON,
-      tree: <PineTree position={[0, 0, 0]} />,
+      tree: <SeasonTree position={[0, 0, 0]} />,
       treePositions: [],
-      rock: <Rock position={[0, 0, 0]} />,
+      rock: <Rock position={[0, 0, 0]} rotation={[0, 0, 0]} />,
       rockPositions: [],
     },
     size: 1,
@@ -56,7 +55,7 @@ const Hexagons = React.memo(({ i, j }) => {
   let grass = HEXAGON;
   let sand = HEXAGON;
   let dirt2 = HEXAGON;
-  let tree = <PineTree position={[0, 0, 0]} />;
+  let tree = <SeasonTree position={[0, 0, 0]} />;
   let treePositions = [];
   let rock = <Rock position={[0, 0, 0]} />;
   let rockPositions = [];
@@ -99,13 +98,19 @@ const Hexagons = React.memo(({ i, j }) => {
 
   const renderTrees = useMemo(() => {
     return (state.treePositions || []).map((position, i) => {
-      return <PineTree key={i} position={position} />;
+      return <SeasonTree key={i} position={position} />;
     });
   }, [treePositions]);
 
   const renderRocks = useMemo(() => {
     return (state.rockPositions || []).map((position, i) => {
-      return <Rock key={i} position={position} />;
+      return (
+        <Rock
+          key={i}
+          position={position}
+          rotation={[0, Math.random() * i, 0]}
+        />
+      );
     });
   }, [rockPositions]);
 
@@ -147,7 +152,7 @@ const Hexagons = React.memo(({ i, j }) => {
           grass = BufferGeometryUtils.mergeGeometries([grass, hexagonStone]);
           if (Math.random() > 0.9) {
             tree = (
-              <PineTree position={[newPosition.x, height, newPosition.y]} />
+              <SeasonTree position={[newPosition.x, height, newPosition.y]} />
             );
             treePositions.push(tree.props.position);
           }

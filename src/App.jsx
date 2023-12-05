@@ -7,7 +7,7 @@ import { useControls } from "leva";
 import { useSpring } from "@react-spring/core";
 import { a } from "@react-spring/three";
 
-import Scene from "./Scene";
+import Scene from "./scene/Scene";
 
 import Text from "./models/Text";
 import "./styles/style.css";
@@ -15,7 +15,7 @@ import "./styles/style.css";
 const App = () => {
   const { toneMappingExposure, cameraPosition } = useControls({
     toneMappingExposure: 0.8,
-    cameraPosition: [-20, 10, 28],
+    cameraPosition: [-18, 8, 25],
   });
 
   const [isBlurred, setIsBlurred] = useState(false);

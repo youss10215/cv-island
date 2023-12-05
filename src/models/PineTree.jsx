@@ -4,29 +4,28 @@ import { useGraph } from "@react-three/fiber";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
 const PineTree = (props) => {
-  const { scene, materials, animations } = useGLTF("/models/PineTree.gltf");
+  const { scene, materials } = useGLTF("/models/pineTree.glb");
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
+
   return (
-    <group {...props} dispose={null}>
-      <group rotation={[-Math.PI / 2, 0, 0]} scale={1.5}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Cylinder028.geometry}
-          material={materials.Wood}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Cylinder028_1.geometry}
-          material={materials.Green}
-        />
-      </group>
+    <group {...props} dispose={null} scale={1.5}>
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Cylinder028.geometry}
+        material={materials.Wood}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Cylinder028_1.geometry}
+        material={materials.Green}
+      />
     </group>
   );
 };
 
-useGLTF.preload("/models/PineTree.gltf");
+useGLTF.preload("/models/pineTree.glb");
 
 export default PineTree;
