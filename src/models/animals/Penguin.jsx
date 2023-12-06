@@ -5,7 +5,9 @@ import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
 export const Penguin = (props) => {
   const group = useRef();
-  const { scene, materials, animations } = useGLTF("/models/penguin.glb");
+  const { scene, materials, animations } = useGLTF(
+    "/models/animals/penguin.glb"
+  );
   const { actions, names } = useAnimations(animations, group);
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
@@ -145,6 +147,6 @@ export const Penguin = (props) => {
   );
 };
 
-useGLTF.preload("/models/penguin.glb");
+useGLTF.preload("/models/animals/penguin.glb");
 
 export default Penguin;

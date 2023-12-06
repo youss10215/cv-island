@@ -5,7 +5,9 @@ import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
 export const AutumnBird = (props) => {
   const group = useRef();
-  const { scene, materials, animations } = useGLTF("/models/autumnBird.glb");
+  const { scene, materials, animations } = useGLTF(
+    "/models/animals/autumnBird.glb"
+  );
   const { actions, names } = useAnimations(animations, group);
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
@@ -59,6 +61,6 @@ export const AutumnBird = (props) => {
   );
 };
 
-useGLTF.preload("/models/autumnBird.glb");
+useGLTF.preload("/models/animals/autumnBird.glb");
 
 export default AutumnBird;

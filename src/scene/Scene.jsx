@@ -14,9 +14,8 @@ import Hexagons, { MAX_HEIGHT } from "../hexagons/Hexagons";
 import { ToneMapping } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 
-import Seagulls from "../models/Seagulls";
-import Sign from "../models/Sign";
-import { ArrowNav } from "../models/ArrowNav";
+import Sign from "../models/items/Sign";
+import ArrowNav from "../models/items/ArrowNav";
 
 import { mapsElements } from "./utils";
 

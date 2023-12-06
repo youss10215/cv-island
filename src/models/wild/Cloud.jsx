@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
 const Cloud = (props) => {
-  const { nodes, materials } = useGLTF("/models/cloud.gltf");
+  const { nodes, materials } = useGLTF("/models/wild/cloud.gltf");
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -15,6 +15,6 @@ const Cloud = (props) => {
   );
 };
 
-useGLTF.preload("/models/cloud.gltf");
+useGLTF.preload("/models/wild/cloud.gltf");
 
 export default Cloud;

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { useAnimations, useGLTF, useTexture } from "@react-three/drei";
-import { useControls } from "leva";
+import { useAnimations, useGLTF } from "@react-three/drei";
 
 export const ArrowNav = (props) => {
   const group = useRef();
-  const { nodes, materials, animations } = useGLTF("/models/arrowNav.glb");
+  const { nodes, animations } = useGLTF("/models/items/arrowNav.glb");
   const { actions, names } = useAnimations(animations, group);
 
   useEffect(() => {
@@ -81,4 +80,6 @@ export const ArrowNav = (props) => {
   );
 };
 
-useGLTF.preload("/models/arrowNav.glb");
+useGLTF.preload("/models/items/arrowNav.glb");
+
+export default ArrowNav;

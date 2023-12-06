@@ -4,7 +4,7 @@ import { useGraph } from "@react-three/fiber";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
 export const PalmTree = (props) => {
-  const { scene, materials } = useGLTF("/models/palmTree.glb");
+  const { scene, materials } = useGLTF("/models/wild/trees/palmTree.glb");
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
 
@@ -38,6 +38,6 @@ export const PalmTree = (props) => {
   );
 };
 
-useGLTF.preload("/models/palmTree.glb");
+useGLTF.preload("/models/wild/trees/palmTree.glb");
 
 export default PalmTree;

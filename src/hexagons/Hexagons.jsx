@@ -1,13 +1,12 @@
-import React, { useEffect, useMemo, useState, useReducer } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import * as THREE from "three";
-import "../styles/style.css";
+import { useEnvironment } from "@react-three/drei";
 
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import SimplexNoise from "https://cdn.skypack.dev/simplex-noise@3.0.0";
 
-import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
 import HexagonsMeshes from "../hexagons-meshes/HexagonsMeshes";
-import { useEnvironment } from "@react-three/drei";
+import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
 
 export const MAX_HEIGHT = 10;
 

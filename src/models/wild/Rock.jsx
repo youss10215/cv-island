@@ -4,7 +4,7 @@ import { useGraph } from "@react-three/fiber";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
 export const Rock = (props) => {
-  const { scene, materials } = useGLTF("/models/rock.gltf");
+  const { scene, materials } = useGLTF("/models/wild/rock.gltf");
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
 
@@ -30,4 +30,4 @@ export const Rock = (props) => {
 
 export default Rock;
 
-useGLTF.preload("/models/rock.gltf");
+useGLTF.preload("/models/wild/rock.gltf");

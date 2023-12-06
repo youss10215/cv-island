@@ -3,7 +3,9 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 
 const Seagulls = (props) => {
   const group = useRef();
-  const { nodes, materials, animations } = useGLTF("/models/seagulls.glb");
+  const { nodes, materials, animations } = useGLTF(
+    "/models/animals/seagulls.glb"
+  );
   const { actions, names } = useAnimations(animations, group);
 
   useEffect(() => {
@@ -11,7 +13,7 @@ const Seagulls = (props) => {
   }, []);
 
   return (
-    <group ref={group} {...props} dispose={null} scale={0.5}>
+    <group ref={group} {...props} dispose={null} scale={0.3}>
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
           <group
@@ -155,6 +157,6 @@ const Seagulls = (props) => {
   );
 };
 
-useGLTF.preload("/models/seagulls.glb");
+useGLTF.preload("/models/animals/seagulls.glb");
 
 export default Seagulls;

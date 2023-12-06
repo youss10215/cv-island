@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import { useControls } from "leva";
 
 export function Text(props) {
-  const { nodes, materials } = useGLTF("/models/text.glb");
+  const { nodes, materials } = useGLTF("/models/items/text.glb");
 
   const { textPosition, textRotation } = useControls({
     textPosition: [0.92, 0.1, 0.2],
@@ -33,4 +33,4 @@ export function Text(props) {
 
 export default Text;
 
-useGLTF.preload("/models/text.glb");
+useGLTF.preload("/models/items/text.glb");

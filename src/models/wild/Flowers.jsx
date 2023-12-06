@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useGraph } from "@react-three/fiber";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
-export const AutumnTree = (props) => {
-  const { scene, materials } = useGLTF("/models/autumnTree.glb");
+export const Flowers = (props) => {
+  const { scene, materials } = useGLTF("/models/wild/flowers.glb");
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
 
@@ -13,25 +13,25 @@ export const AutumnTree = (props) => {
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Cylinder061.geometry}
-        material={materials.Wood}
+        geometry={nodes.Plane029.geometry}
+        material={materials.Green}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Cylinder061_1.geometry}
-        material={materials.Orange}
+        geometry={nodes.Plane029_1.geometry}
+        material={materials.Cyan}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Cylinder061_2.geometry}
-        material={materials.LightOrange}
+        geometry={nodes.Plane029_2.geometry}
+        material={materials.Yellow}
       />
     </group>
   );
 };
 
-useGLTF.preload("/models/autumnTree.glb");
+useGLTF.preload("/models/wild/flowers.glb");
 
-export default AutumnTree;
+export default Flowers;
