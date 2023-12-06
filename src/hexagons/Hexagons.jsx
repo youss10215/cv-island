@@ -28,7 +28,7 @@ const tilePosition = (tileX, tileY) => {
 };
 
 const Hexagons = React.memo(({ i, j, elements }) => {
-  const { SeasonTree, Bird, Rock } = elements;
+  const { Tree, Rock, texture } = elements;
   const initialState = {
     hexagons: {
       stone: HEXAGON,
@@ -36,7 +36,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       grass: HEXAGON,
       sand: HEXAGON,
       dirt2: HEXAGON,
-      tree: <SeasonTree position={[0, 0, 0]} />,
+      tree: <Tree position={[0, 0, 0]} />,
       treePositions: [],
       rock: <Rock position={[0, 0, 0]} rotation={[0, 0, 0]} />,
       rockPositions: [],
@@ -54,7 +54,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
   let grass = HEXAGON;
   let sand = HEXAGON;
   let dirt2 = HEXAGON;
-  let tree = <SeasonTree position={[0, 0, 0]} />;
+  let tree = <Tree position={[0, 0, 0]} />;
   let treePositions = [];
   let rock = <Rock position={[0, 0, 0]} />;
   let rockPositions = [];
@@ -97,7 +97,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
 
   const renderTrees = useMemo(() => {
     return (state.treePositions || []).map((position, i) => {
-      return <SeasonTree key={i} position={position} />;
+      return <Tree key={i} position={position} />;
     });
   }, [treePositions]);
 
@@ -150,9 +150,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
         } else if (height > GRASS_HEIGHT) {
           grass = BufferGeometryUtils.mergeGeometries([grass, hexagonStone]);
           if (Math.random() > 0.9) {
-            tree = (
-              <SeasonTree position={[newPosition.x, height, newPosition.y]} />
-            );
+            tree = <Tree position={[newPosition.x, height, newPosition.y]} />;
             treePositions.push(tree.props.position);
           }
         } else if (height > SAND_HEIGHT) {
@@ -199,7 +197,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       {clouds}
       {renderTrees}
       {renderRocks}
-      <HexagonsMeshes hexagons={hexagons} size={size} />
+      <HexagonsMeshes hexagons={hexagons} size={size} texture={texture} />
     </>
   );
 });

@@ -21,11 +21,11 @@ import { mapsElements } from "./utils";
 
 const defaultProps = {
   backgrounSceneColor: "#d9e8f2",
-  pointLightColor: "#dbdbda",
+  pointLightColor1: "#dbdbda",
   pointLightColor2: "#d9e8f2",
   pointLightIntensity: 4,
-  pointLightPosition1: [0, 20, -10],
-  pointLightPosition2: [-16, 20, 24],
+  pointLightPosition1: [-16, 20, 24],
+  pointLightPosition2: [16, 30, -24],
   seagullsPosition: [-7, 12, 6],
   signPosition: [-10.8, 0, 14.6],
   aboutMePosition: [-11, 4.4, 14.8],
@@ -37,7 +37,9 @@ const defaultProps = {
 };
 
 const Scene = ({ handleBlur }) => {
-  const lightRef = useRef();
+  const lightRef1 = useRef();
+  const lightRef2 = useRef();
+
   const [index, setIndex] = useState(0);
 
   const {
@@ -57,7 +59,8 @@ const Scene = ({ handleBlur }) => {
     seaColor,
   } = useControls(defaultProps);
 
-  useHelper(lightRef, THREE.PointLightHelper, 1, "hotpink");
+  useHelper(lightRef1, THREE.PointLightHelper, 1, "hotpink");
+  useHelper(lightRef2, THREE.PointLightHelper, 1, "green");
 
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
   const [waterTexture] = useTexture(["/textures/water.png"]);
@@ -110,7 +113,7 @@ const Scene = ({ handleBlur }) => {
     <>
       <Hexagons i={sides} j={sides} elements={mapsElements[index]} />
       <pointLight
-        ref={lightRef}
+        ref={lightRef1}
         color={new THREE.Color(pointLightColor1).convertSRGBToLinear()}
         intensity={pointLightIntensity}
         distance={200}
@@ -122,7 +125,7 @@ const Scene = ({ handleBlur }) => {
         shadow-camera-far={500}
       />
       <pointLight
-        ref={lightRef}
+        ref={lightRef2}
         color={new THREE.Color(pointLightColor2).convertSRGBToLinear()}
         intensity={pointLightIntensity}
         distance={200}
@@ -142,7 +145,7 @@ const Scene = ({ handleBlur }) => {
       <PerspectiveCamera fov={45} />
       {/* <Environment preset='sunset' /> */}
       <Bird position={seagullsPosition} />
-      <Sign onClick={handleBlur} position={signPosition} />
+      {/* <Sign onClick={handleBlur} position={signPosition} />
       <Html
         rotation={aboutMeRotation}
         position={aboutMePosition}
@@ -152,7 +155,7 @@ const Scene = ({ handleBlur }) => {
         <div onClick={handleBlur} className="about-me">
           Experience
         </div>
-      </Html>
+      </Html> */}
       <ArrowNav
         onClick={clickOnRightArrow}
         position={arrowPosition}
