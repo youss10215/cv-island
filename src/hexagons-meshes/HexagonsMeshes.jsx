@@ -26,6 +26,7 @@ const HexagonsMeshes = ({ hexagons, size, texture }) => {
   const [iceTexture] = useTexture(["/textures/ice.jpg"]);
   const [ice2Texture] = useTexture(["/textures/ice2.jpg"]);
   const [mapFloorTexture] = useTexture(["/textures/mapFloor.jpg"]);
+  const [darkGrassTexture] = useTexture(["/textures/darkGrass.jpg"]);
 
   const { lightIntensity } = useControls({ lightMapIntensity: 0.4 });
 
@@ -127,20 +128,28 @@ const HexagonsMeshes = ({ hexagons, size, texture }) => {
     lightIntensity,
   });
 
+  const darkGrass = new THREE.MeshPhysicalMaterial({
+    map: darkGrassTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
   const geo = useMemo(() => {
     return {
       summer: [
         {
           key: LEVEL5,
-          material: stone,
+          material: dirt,
         },
         {
           key: LEVEL4,
-          material: grass,
+          material: darkGrass,
         },
         {
           key: LEVEL3,
-          material: green,
+          material: grass,
         },
         {
           key: LEVEL2,

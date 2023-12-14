@@ -8,13 +8,13 @@ import PalmTree from "../models/wild/trees/PalmTree";
 import PineTree from "../models/wild/trees/PineTree";
 import WinterTree from "../models/wild/trees/WinterTree";
 import Flowers from "../models/wild/Flowers";
-import Monkey from "../models/animals/Monkey";
+import Crab from "../models/animals/Crab";
 
 export const mapsElements = [
   {
     Tree: PalmTree,
     Bird: Seagulls,
-    Animal: Monkey,
+    Animal: Crab,
     texture: 'summer'
   }, {
     Tree: AutumnTree,
