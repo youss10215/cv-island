@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { Suspense, useEffect, useMemo, useReducer } from "react";
 import * as THREE from "three";
 import { useEnvironment } from "@react-three/drei";
 
@@ -10,11 +10,11 @@ import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
 
 export const MAX_HEIGHT = 10;
 
-const STONE_HEIGHT = MAX_HEIGHT * 0.8;
-const DIRT_HEIGHT = MAX_HEIGHT * 0.7;
-const GRASS_HEIGHT = MAX_HEIGHT * 0.5;
-const SAND_HEIGHT = MAX_HEIGHT * 0.3;
-const DIRT2_HEIGHT = MAX_HEIGHT * 0;
+const LEVEL5_HEIGHT = MAX_HEIGHT * 0.8;
+const LEVEL4_HEIGHT = MAX_HEIGHT * 0.7;
+const LEVEL3_HEIGHT = MAX_HEIGHT * 0.5;
+const LEVEL2_HEIGHT = MAX_HEIGHT * 0.3;
+const LEVEL1_HEIGHT = MAX_HEIGHT * 0;
 const HEXAGON = new THREE.CylinderGeometry(1, 1, 0, 6, 1, false);
 
 const SIZE_X = 1.7;
@@ -28,18 +28,16 @@ const tilePosition = (tileX, tileY) => {
 };
 
 const Hexagons = React.memo(({ i, j, elements }) => {
-  const { Tree, Rock, texture } = elements;
+  const { Tree, Animal, texture } = elements;
   const initialState = {
     hexagons: {
-      stone: HEXAGON,
-      dirt: HEXAGON,
-      grass: HEXAGON,
-      sand: HEXAGON,
-      dirt2: HEXAGON,
-      tree: <Tree position={[0, 0, 0]} />,
+      level5: HEXAGON,
+      level4: HEXAGON,
+      level3: HEXAGON,
+      level2: HEXAGON,
+      level1: HEXAGON,
       treePositions: [],
-      rock: <Rock position={[0, 0, 0]} rotation={[0, 0, 0]} />,
-      rockPositions: [],
+      animalPositions: [],
     },
     size: 1,
   };
@@ -49,15 +47,13 @@ const Hexagons = React.memo(({ i, j, elements }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { hexagons, size } = state;
 
-  let stone = HEXAGON;
-  let dirt = HEXAGON;
-  let grass = HEXAGON;
-  let sand = HEXAGON;
-  let dirt2 = HEXAGON;
-  let tree = <Tree position={[0, 0, 0]} />;
+  let level5 = HEXAGON;
+  let level4 = HEXAGON;
+  let level3 = HEXAGON;
+  let level2 = HEXAGON;
+  let level1 = HEXAGON;
   let treePositions = [];
-  let rock = <Rock position={[0, 0, 0]} />;
-  let rockPositions = [];
+  let animalPositions = [];
 
   const clouds = useMemo(() => {
     let geo = new THREE.SphereGeometry(0, 0, 0);
@@ -96,22 +92,24 @@ const Hexagons = React.memo(({ i, j, elements }) => {
   }, []);
 
   const renderTrees = useMemo(() => {
+    // const Tree = React.lazy(() => import("../models/wild/trees/" + tree));
     return (state.treePositions || []).map((position, i) => {
       return <Tree key={i} position={position} />;
     });
-  }, [treePositions]);
+  }, [treePositions, Tree]);
 
-  const renderRocks = useMemo(() => {
-    return (state.rockPositions || []).map((position, i) => {
+  const renderAnimals = useMemo(() => {
+    // const Animal = React.lazy(() => import("../models/animals/" + animal));
+    return (state.animalPositions || []).map((position, i) => {
       return (
-        <Rock
+        <Animal
           key={i}
           position={position}
           rotation={[0, Math.random() * i, 0]}
         />
       );
     });
-  }, [rockPositions]);
+  }, [animalPositions, Animal]);
 
   useEffect(() => {
     let counter = 0;
@@ -143,25 +141,23 @@ const Hexagons = React.memo(({ i, j, elements }) => {
 
         hexagonStone.translate(newPosition.x, height * 0.5, newPosition.y);
 
-        if (height > STONE_HEIGHT) {
-          stone = BufferGeometryUtils.mergeGeometries([stone, hexagonStone]);
-        } else if (height > DIRT_HEIGHT) {
-          dirt = BufferGeometryUtils.mergeGeometries([dirt, hexagonStone]);
-        } else if (height > GRASS_HEIGHT) {
-          grass = BufferGeometryUtils.mergeGeometries([grass, hexagonStone]);
+        if (height > LEVEL5_HEIGHT) {
+          level5 = BufferGeometryUtils.mergeGeometries([level5, hexagonStone]);
+        } else if (height > LEVEL4_HEIGHT) {
+          level4 = BufferGeometryUtils.mergeGeometries([level4, hexagonStone]);
+        } else if (height > LEVEL3_HEIGHT) {
+          level3 = BufferGeometryUtils.mergeGeometries([level3, hexagonStone]);
           if (Math.random() > 0.9) {
-            tree = <Tree position={[newPosition.x, height, newPosition.y]} />;
-            treePositions.push(tree.props.position);
+            treePositions.push([newPosition.x, height, newPosition.y]);
           }
-        } else if (height > SAND_HEIGHT) {
-          sand = BufferGeometryUtils.mergeGeometries([sand, hexagonStone]);
+        } else if (height > LEVEL2_HEIGHT) {
+          level2 = BufferGeometryUtils.mergeGeometries([level2, hexagonStone]);
 
           if (Math.random() > 0.9) {
-            rock = <Rock position={[newPosition.x, height, newPosition.y]} />;
-            rockPositions.push(rock.props.position);
+            animalPositions.push([newPosition.x, height, newPosition.y]);
           }
-        } else if (height > DIRT2_HEIGHT) {
-          dirt2 = BufferGeometryUtils.mergeGeometries([dirt2, hexagonStone]);
+        } else if (height > LEVEL1_HEIGHT) {
+          level1 = BufferGeometryUtils.mergeGeometries([level1, hexagonStone]);
         }
 
         counter++;
@@ -172,13 +168,11 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       type: SET_HEGAGONS,
       payload: {
         hexagons: {
-          stone,
-          dirt,
-          grass,
-          sand,
-          dirt2,
-          tree,
-          rock,
+          level5,
+          level4,
+          level3,
+          level2,
+          level1,
         },
       },
     });
@@ -187,7 +181,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       type: SET_POSITION,
       payload: {
         treePositions,
-        rockPositions,
+        animalPositions,
       },
     });
   }, [i, j]);
@@ -196,7 +190,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
     <>
       {clouds}
       {renderTrees}
-      {renderRocks}
+      {renderAnimals}
       <HexagonsMeshes hexagons={hexagons} size={size} texture={texture} />
     </>
   );

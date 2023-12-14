@@ -4,6 +4,12 @@ import * as THREE from "three";
 import { useEnvironment, useTexture } from "@react-three/drei";
 import { useControls } from "leva";
 
+const LEVEL1 = "level1";
+const LEVEL2 = "level2";
+const LEVEL3 = "level3";
+const LEVEL4 = "level4";
+const LEVEL5 = "level5";
+
 const HexagonsMeshes = ({ hexagons, size, texture }) => {
   const [stoneTexture] = useTexture([`/textures/stone.jpg`]);
   const [dirtTexture] = useTexture(["/textures/dirt.jpg"]);
@@ -25,218 +31,207 @@ const HexagonsMeshes = ({ hexagons, size, texture }) => {
 
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
 
+  const stone = new THREE.MeshPhysicalMaterial({
+    map: stoneTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const grass = new THREE.MeshPhysicalMaterial({
+    map: grassTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const green = new THREE.MeshPhysicalMaterial({
+    map: greenTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const mapFloor = new THREE.MeshPhysicalMaterial({
+    map: mapFloorTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const sand = new THREE.MeshPhysicalMaterial({
+    map: sandTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const dirt = new THREE.MeshPhysicalMaterial({
+    map: dirtTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const dirt2 = new THREE.MeshPhysicalMaterial({
+    map: dirt2Texture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const darkStone = new THREE.MeshPhysicalMaterial({
+    map: darkStoneTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const blueIce = new THREE.MeshPhysicalMaterial({
+    map: blueIceTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const blueIce2 = new THREE.MeshPhysicalMaterial({
+    map: blueIce2Texture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const ice = new THREE.MeshPhysicalMaterial({
+    map: iceTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const white = new THREE.MeshPhysicalMaterial({
+    map: whiteTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
   const geo = useMemo(() => {
     return {
       summer: [
         {
-          key: "stone",
-          material: new THREE.MeshPhysicalMaterial({
-            map: stoneTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL5,
+          material: stone,
         },
         {
-          key: "dirt",
-          material: new THREE.MeshPhysicalMaterial({
-            map: grassTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL4,
+          material: grass,
         },
         {
-          key: "grass",
-          material: new THREE.MeshPhysicalMaterial({
-            map: greenTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL3,
+          material: green,
         },
         {
-          key: "sand",
-          material: new THREE.MeshPhysicalMaterial({
-            map: mapFloorTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL2,
+          material: mapFloor,
         },
         {
-          key: "dirt2",
-          material: new THREE.MeshPhysicalMaterial({
-            map: sandTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL1,
+          material: sand,
         },
       ],
       autumn: [
         {
-          key: "stone",
-          material: new THREE.MeshPhysicalMaterial({
-            map: dirtTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL5,
+          material: dirt,
         },
         {
-          key: "dirt",
-          material: new THREE.MeshPhysicalMaterial({
-            map: dirtTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL4,
+          material: dirt,
         },
         {
-          key: "grass",
-          material: new THREE.MeshPhysicalMaterial({
-            map: grassTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL3,
+          material: grass,
         },
         {
-          key: "sand",
-          material: new THREE.MeshPhysicalMaterial({
-            map: sandTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL2,
+          material: sand,
         },
         {
-          key: "dirt2",
-          material: new THREE.MeshPhysicalMaterial({
-            map: dirt2Texture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL1,
+          material: dirt2,
         },
       ],
       winter: [
         {
-          key: "stone",
-          material: new THREE.MeshPhysicalMaterial({
-            map: darkStoneTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL5,
+          material: darkStone,
         },
         {
-          key: "dirt",
-          material: new THREE.MeshPhysicalMaterial({
-            map: blueIceTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL4,
+          material: blueIce,
         },
         {
-          key: "grass",
-          material: new THREE.MeshPhysicalMaterial({
-            map: blueIce2Texture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL3,
+          material: blueIce2,
         },
         {
-          key: "sand",
-          material: new THREE.MeshPhysicalMaterial({
-            map: iceTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL2,
+          material: ice,
         },
         {
-          key: "dirt2",
-          material: new THREE.MeshPhysicalMaterial({
-            map: whiteTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL1,
+          material: white,
         },
       ],
       spring: [
         {
-          key: "stone",
-          material: new THREE.MeshPhysicalMaterial({
-            map: grassTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL5,
+          material: grass,
         },
         {
-          key: "dirt",
-          material: new THREE.MeshPhysicalMaterial({
-            map: sandTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL4,
+          material: dirt,
         },
         {
-          key: "grass",
-          material: new THREE.MeshPhysicalMaterial({
-            map: sandTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL3,
+          material: sand,
         },
         {
-          key: "sand",
-          material: new THREE.MeshPhysicalMaterial({
-            map: sandTexture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL2,
+          material: sand,
         },
         {
-          key: "dirt2",
-          material: new THREE.MeshPhysicalMaterial({
-            map: dirt2Texture,
-            envMap,
-            envMapIntensity: 0.7,
-            flatShading: true,
-            lightIntensity,
-          }),
+          key: LEVEL1,
+          material: dirt2,
         },
       ],
     };
-  }, [stoneTexture, dirtTexture, grassTexture, sandTexture, dirt2Texture]);
+  }, [
+    stone,
+    grass,
+    green,
+    mapFloor,
+    sand,
+    dirt,
+    dirt2,
+    darkStone,
+    blueIce,
+    blueIce2,
+    ice,
+    white,
+  ]);
 
   const renderHexagons = useMemo(() => {
     return geo[texture].map((item, i) => {

@@ -130,11 +130,6 @@ const Scene = ({ handleBlur }) => {
         intensity={pointLightIntensity}
         distance={200}
         position={pointLightPosition2}
-        castShadow
-        shadow-mapSize-height={512}
-        shadow-mapSize-width={512}
-        shadow-camera-near={0.5}
-        shadow-camera-far={500}
       />
       <ambientLight
         color={new THREE.Color("#ffe8bc").convertSRGBToLinear()}

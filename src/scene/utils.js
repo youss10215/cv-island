@@ -1,6 +1,3 @@
-
-import { useEnvironment, useTexture } from "@react-three/drei";
-
 import AutumnBird from "../models/animals/AutumnBird";
 import Penguin from "../models/animals/Penguin";
 import Seagulls from "../models/animals/Seagulls";
@@ -11,32 +8,30 @@ import PalmTree from "../models/wild/trees/PalmTree";
 import PineTree from "../models/wild/trees/PineTree";
 import WinterTree from "../models/wild/trees/WinterTree";
 import Flowers from "../models/wild/Flowers";
-import Rock from "../models/wild/Rock";
-import Flamingo from "../models/animals/Flamingo";
 import Monkey from "../models/animals/Monkey";
 
 export const mapsElements = [
   {
     Tree: PalmTree,
     Bird: Seagulls,
-    Rock: Monkey,
+    Animal: Monkey,
     texture: 'summer'
   }, {
     Tree: AutumnTree,
     Bird: Swallow,
-    Rock: AutumnBird,
+    Animal: AutumnBird,
     texture: 'autumn'
   },
   {
     Tree: WinterTree,
     Bird: SnowlyOwl,
-    Rock: Penguin,
+    Animal: Penguin,
     texture: 'winter'
   },
   {
     Tree: PineTree,
     Bird: Swallow,
-    Rock: Flowers,
+    Animal: Flowers,
     texture: 'spring'
   },
 ];
