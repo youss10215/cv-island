@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo, useReducer } from "react";
+import React, { Suspense, useEffect, useMemo, useReducer, useRef } from "react";
 import * as THREE from "three";
 import { useEnvironment } from "@react-three/drei";
 
@@ -28,7 +28,7 @@ const tilePosition = (tileX, tileY) => {
 };
 
 const Hexagons = React.memo(({ i, j, elements }) => {
-  const { Tree, Animal, texture } = elements;
+  const { treePath, animalPath, texture } = elements;
   const initialState = {
     hexagons: {
       level5: HEXAGON,
@@ -36,24 +36,22 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       level3: HEXAGON,
       level2: HEXAGON,
       level1: HEXAGON,
-      treePositions: [],
-      animalPositions: [],
     },
+    treePositions: [],
+    animalPositions: [],
     size: 1,
   };
 
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { hexagons, size } = state;
+  const { hexagons, size, treePositions, animalPositions } = state;
 
-  let level5 = HEXAGON;
-  let level4 = HEXAGON;
-  let level3 = HEXAGON;
-  let level2 = HEXAGON;
-  let level1 = HEXAGON;
-  let treePositions = [];
-  let animalPositions = [];
+  const level1 = useRef(HEXAGON);
+  const level2 = useRef(HEXAGON);
+  const level3 = useRef(HEXAGON);
+  const level4 = useRef(HEXAGON);
+  const level5 = useRef(HEXAGON);
 
   const clouds = useMemo(() => {
     let geo = new THREE.SphereGeometry(0, 0, 0);
@@ -89,32 +87,24 @@ const Hexagons = React.memo(({ i, j, elements }) => {
     }
 
     return <mesh args={[geo]} material={cloudMaterial} castShadow={true} />;
-  }, []);
+  }, [envMap]);
 
-  const renderTrees = useMemo(() => {
-    // const Tree = React.lazy(() => import("../models/wild/trees/" + tree));
-    return (state.treePositions || []).map((position, i) => {
-      return <Tree key={i} position={position} />;
-    });
-  }, [treePositions, Tree]);
+  const TreeComponent = useMemo(() => {
+    const Component = React.lazy(() => import(`${treePath}.jsx`));
+    return Component;
+  }, [treePath]);
 
-  const renderAnimals = useMemo(() => {
-    // const Animal = React.lazy(() => import("../models/animals/" + animal));
-    return (state.animalPositions || []).map((position, i) => {
-      return (
-        <Animal
-          key={i}
-          position={position}
-          rotation={[0, Math.random() * i, 0]}
-        />
-      );
-    });
-  }, [animalPositions, Animal]);
+  const AnimalComponent = useMemo(() => {
+    const Component = React.lazy(() => import(`${animalPath}.jsx`));
+    return Component;
+  }, [animalPath]);
 
   useEffect(() => {
     let counter = 0;
 
     const simplex = new SimplexNoise();
+    const newTreePositions = [];
+    const newAnimalPositions = [];
     for (let x = -i; x < i; x++) {
       for (let z = -j; z < j; z++) {
         const noise = (simplex.noise2D(x * 0.1, z * 0.1) + 1) * 0.5;
@@ -142,22 +132,22 @@ const Hexagons = React.memo(({ i, j, elements }) => {
         hexagonStone.translate(newPosition.x, height * 0.5, newPosition.y);
 
         if (height > LEVEL5_HEIGHT) {
-          level5 = BufferGeometryUtils.mergeGeometries([level5, hexagonStone]);
+          level5.current = BufferGeometryUtils.mergeGeometries([level5.current, hexagonStone]);
         } else if (height > LEVEL4_HEIGHT) {
-          level4 = BufferGeometryUtils.mergeGeometries([level4, hexagonStone]);
+          level4.current = BufferGeometryUtils.mergeGeometries([level4.current, hexagonStone]);
         } else if (height > LEVEL3_HEIGHT) {
-          level3 = BufferGeometryUtils.mergeGeometries([level3, hexagonStone]);
+          level3.current = BufferGeometryUtils.mergeGeometries([level3.current, hexagonStone]);
           if (Math.random() > 0.9) {
-            treePositions.push([newPosition.x, height, newPosition.y]);
+            newTreePositions.push([newPosition.x, height, newPosition.y]);
           }
         } else if (height > LEVEL2_HEIGHT) {
-          level2 = BufferGeometryUtils.mergeGeometries([level2, hexagonStone]);
+          level2.current = BufferGeometryUtils.mergeGeometries([level2.current, hexagonStone]);
 
           if (Math.random() > 0.9) {
-            animalPositions.push([newPosition.x, height, newPosition.y]);
+            newAnimalPositions.push([newPosition.x, height, newPosition.y]);
           }
         } else if (height > LEVEL1_HEIGHT) {
-          level1 = BufferGeometryUtils.mergeGeometries([level1, hexagonStone]);
+          level1.current = BufferGeometryUtils.mergeGeometries([level1.current, hexagonStone]);
         }
 
         counter++;
@@ -168,11 +158,11 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       type: SET_HEGAGONS,
       payload: {
         hexagons: {
-          level5,
-          level4,
-          level3,
-          level2,
-          level1,
+          level5: level5.current,
+          level4: level4.current,
+          level3: level3.current,
+          level2: level2.current,
+          level1: level1.current,
         },
       },
     });
@@ -180,8 +170,8 @@ const Hexagons = React.memo(({ i, j, elements }) => {
     dispatch({
       type: SET_POSITION,
       payload: {
-        treePositions,
-        animalPositions,
+        treePositions: newTreePositions,
+        animalPositions: newAnimalPositions,
       },
     });
   }, [i, j]);
@@ -189,11 +179,32 @@ const Hexagons = React.memo(({ i, j, elements }) => {
   return (
     <>
       {clouds}
-      {renderTrees}
-      {renderAnimals}
+      {/* <Suspense fallback={null}>
+      <Trees />
+      </Suspense> */}
+      {
+        treePositions.map((position, i) => {
+          return (
+            <Suspense key={i} fallback={null}>
+            <TreeComponent position={position} />;
+            </Suspense>
+          );
+        })
+      }
+      {
+        animalPositions.map((position, i) => {
+          return (
+            <Suspense key={i} fallback={null}>
+            <AnimalComponent position={position} />;
+            </Suspense>
+          );
+        })
+      }
       <HexagonsMeshes hexagons={hexagons} size={size} texture={texture} />
     </>
   );
 });
+
+Hexagons.displayName = "Hexagons";
 
 export default Hexagons;

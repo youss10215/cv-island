@@ -1,37 +1,37 @@
-import AutumnBird from "../models/animals/AutumnBird";
-import Penguin from "../models/animals/Penguin";
+// import AutumnBird from "../models/animals/AutumnBird";
+// import Penguin from "../models/animals/Penguin";
 import Seagulls from "../models/animals/Seagulls";
 import Swallow from "../models/animals/Swallow";
 import SnowlyOwl from "../models/animals/SnowlyOwl";
-import AutumnTree from "../models/wild/trees/AutumnTree";
-import PalmTree from "../models/wild/trees/PalmTree";
-import PineTree from "../models/wild/trees/PineTree";
-import WinterTree from "../models/wild/trees/WinterTree";
-import Flowers from "../models/wild/Flowers";
-import Crab from "../models/animals/Crab";
+// import AutumnTree from "../models/wild/trees/AutumnTree";
+// import PalmTree from "../models/wild/trees/PalmTree";
+// import PineTree from "../models/wild/trees/PineTree";
+// import WinterTree from "../models/wild/trees/WinterTree";
+// import Flowers from "../models/wild/Flowers";
+// import Crab from "../models/animals/Crab";
 
 export const mapsElements = [
   {
-    Tree: PalmTree,
+    treePath: '../models/wild/trees/PalmTree',
     Bird: Seagulls,
-    Animal: Crab,
+    animalPath: '../models/animals/Crab',
     texture: 'summer'
   }, {
-    Tree: AutumnTree,
+    treePath: '../models/wild/trees/AutumnTree',
     Bird: Swallow,
-    Animal: AutumnBird,
+    animalPath: '../models/animals/AutumnBird',
     texture: 'autumn'
   },
   {
-    Tree: WinterTree,
+    treePath: '../models/wild/trees/WinterTree',
     Bird: SnowlyOwl,
-    Animal: Penguin,
+    animalPath: '../models/animals/AutumnBird',
     texture: 'winter'
   },
   {
-    Tree: PineTree,
+    treePath: '../models/wild/trees/PineTree',
     Bird: Swallow,
-    Animal: Flowers,
+    animalPath: '../models/wild/Flowers',
     texture: 'spring'
   },
 ];
