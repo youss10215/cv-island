@@ -1,5 +1,6 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useMemo, Suspense } from "react";
 import {
+  Environment,
   Html,
   OrbitControls,
   PerspectiveCamera,
@@ -26,7 +27,7 @@ const defaultProps = {
   pointLightIntensity: 4,
   pointLightPosition1: [-16, 20, 24],
   pointLightPosition2: [16, 30, -24],
-  seagullsPosition: [-7, 12, 6],
+  birdPosition: [-7, 12, 6],
   signPosition: [-10.8, 0, 14.6],
   aboutMePosition: [-11, 4.4, 14.8],
   aboutMeRotation: [0, -0.6, 0],
@@ -49,8 +50,8 @@ const Scene = ({ handleBlur }) => {
     pointLightIntensity,
     pointLightPosition1,
     pointLightPosition2,
-    seagullsPosition,
     arrowPosition,
+    birdPosition,
     signPosition,
     aboutMePosition,
     aboutMeRotation,
@@ -108,10 +109,18 @@ const Scene = ({ handleBlur }) => {
     }
   }, [index]);
 
-  const { Bird } = mapsElements[index];
+  const { birdPath } = mapsElements[index];
+  const BirdComponent = useMemo(() => {
+    const Component = React.lazy(() => import(birdPath));
+    return Component;
+  }, [birdPath]);
+
   return (
     <>
       <Hexagons i={sides} j={sides} elements={mapsElements[index]} />
+      <Suspense fallback={null}>
+        <BirdComponent position={birdPosition} />;
+      </Suspense>
       <pointLight
         ref={lightRef1}
         color={new THREE.Color(pointLightColor1).convertSRGBToLinear()}
@@ -138,8 +147,7 @@ const Scene = ({ handleBlur }) => {
       <OrbitControls target={[0, 0, 0]} />
       <color attach="background" args={[backgrounSceneColor]} />
       <PerspectiveCamera fov={45} />
-      {/* <Environment preset='sunset' /> */}
-      <Bird position={seagullsPosition} />
+      <Environment preset="sunset" />
       {/* <Sign onClick={handleBlur} position={signPosition} />
       <Html
         rotation={aboutMeRotation}

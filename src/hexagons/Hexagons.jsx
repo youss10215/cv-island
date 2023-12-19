@@ -132,22 +132,37 @@ const Hexagons = React.memo(({ i, j, elements }) => {
         hexagonStone.translate(newPosition.x, height * 0.5, newPosition.y);
 
         if (height > LEVEL5_HEIGHT) {
-          level5.current = BufferGeometryUtils.mergeGeometries([level5.current, hexagonStone]);
+          level5.current = BufferGeometryUtils.mergeGeometries([
+            level5.current,
+            hexagonStone,
+          ]);
         } else if (height > LEVEL4_HEIGHT) {
-          level4.current = BufferGeometryUtils.mergeGeometries([level4.current, hexagonStone]);
+          level4.current = BufferGeometryUtils.mergeGeometries([
+            level4.current,
+            hexagonStone,
+          ]);
         } else if (height > LEVEL3_HEIGHT) {
-          level3.current = BufferGeometryUtils.mergeGeometries([level3.current, hexagonStone]);
+          level3.current = BufferGeometryUtils.mergeGeometries([
+            level3.current,
+            hexagonStone,
+          ]);
           if (Math.random() > 0.9) {
             newTreePositions.push([newPosition.x, height, newPosition.y]);
           }
         } else if (height > LEVEL2_HEIGHT) {
-          level2.current = BufferGeometryUtils.mergeGeometries([level2.current, hexagonStone]);
+          level2.current = BufferGeometryUtils.mergeGeometries([
+            level2.current,
+            hexagonStone,
+          ]);
 
           if (Math.random() > 0.9) {
             newAnimalPositions.push([newPosition.x, height, newPosition.y]);
           }
         } else if (height > LEVEL1_HEIGHT) {
-          level1.current = BufferGeometryUtils.mergeGeometries([level1.current, hexagonStone]);
+          level1.current = BufferGeometryUtils.mergeGeometries([
+            level1.current,
+            hexagonStone,
+          ]);
         }
 
         counter++;
@@ -179,27 +194,24 @@ const Hexagons = React.memo(({ i, j, elements }) => {
   return (
     <>
       {clouds}
-      {/* <Suspense fallback={null}>
-      <Trees />
-      </Suspense> */}
-      {
-        treePositions.map((position, i) => {
-          return (
-            <Suspense key={i} fallback={null}>
+      {treePositions.map((position, i) => {
+        return (
+          <Suspense key={i} fallback={null}>
             <TreeComponent position={position} />;
-            </Suspense>
-          );
-        })
-      }
-      {
-        animalPositions.map((position, i) => {
-          return (
-            <Suspense key={i} fallback={null}>
-            <AnimalComponent position={position} />;
-            </Suspense>
-          );
-        })
-      }
+          </Suspense>
+        );
+      })}
+      {animalPositions.map((position, i) => {
+        return (
+          <Suspense key={i} fallback={null}>
+            <AnimalComponent
+              position={position}
+              rotation={[0, Math.random() * i, 0]}
+            />
+            ;
+          </Suspense>
+        );
+      })}
       <HexagonsMeshes hexagons={hexagons} size={size} texture={texture} />
     </>
   );

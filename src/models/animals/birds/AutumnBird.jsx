@@ -3,7 +3,7 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { useGraph } from "@react-three/fiber";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
-export const AutumnBird = (props) => {
+const AutumnBird = (props) => {
   const group = useRef();
   const { scene, materials, animations } = useGLTF(
     "/models/animals/autumnBird.glb"

@@ -16,17 +16,17 @@ const HexagonsMeshes = ({ hexagons, size, texture }) => {
   const [grassTexture] = useTexture(["/textures/grass.jpg"]);
   const [sandTexture] = useTexture(["/textures/sand.jpg"]);
   const [dirt2Texture] = useTexture(["/textures/dirt2.jpg"]);
-  const [yellowTexture] = useTexture(["/textures/yellow.jpg"]);
   const [greenTexture] = useTexture(["/textures/green.jpg"]);
-  const [redTexture] = useTexture(["/textures/red.jpg"]);
   const [darkStoneTexture] = useTexture(["/textures/darkStone.jpg"]);
   const [whiteTexture] = useTexture(["/textures/white.jpg"]);
   const [blueIceTexture] = useTexture(["/textures/blueIce.jpg"]);
   const [blueIce2Texture] = useTexture(["/textures/blueIce2.jpg"]);
   const [iceTexture] = useTexture(["/textures/ice.jpg"]);
-  const [ice2Texture] = useTexture(["/textures/ice2.jpg"]);
   const [mapFloorTexture] = useTexture(["/textures/mapFloor.jpg"]);
   const [darkGrassTexture] = useTexture(["/textures/darkGrass.jpg"]);
+  const [lightBrownTexture] = useTexture(["/textures/lightBrown.jpg"]);
+  const [lightStoneTexture] = useTexture(["/textures/lightStone.jpg"]);
+  const [brownTexture] = useTexture(["/textures/brown.jpg"]);
 
   const { lightIntensity } = useControls({ lightMapIntensity: 0.4 });
 
@@ -136,6 +136,30 @@ const HexagonsMeshes = ({ hexagons, size, texture }) => {
     lightIntensity,
   });
 
+  const lightBrown = new THREE.MeshPhysicalMaterial({
+    map: lightBrownTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const brown = new THREE.MeshPhysicalMaterial({
+    map: brownTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
+  const lightStone = new THREE.MeshPhysicalMaterial({
+    map: lightStoneTexture,
+    envMap,
+    envMapIntensity: 0.7,
+    flatShading: true,
+    lightIntensity,
+  });
+
   const geo = useMemo(() => {
     return {
       summer: [
@@ -171,7 +195,7 @@ const HexagonsMeshes = ({ hexagons, size, texture }) => {
         },
         {
           key: LEVEL3,
-          material: grass,
+          material: darkGrass,
         },
         {
           key: LEVEL2,
@@ -207,23 +231,23 @@ const HexagonsMeshes = ({ hexagons, size, texture }) => {
       spring: [
         {
           key: LEVEL5,
-          material: grass,
+          material: lightStone,
         },
         {
           key: LEVEL4,
-          material: dirt,
+          material: darkGrass,
         },
         {
           key: LEVEL3,
-          material: sand,
+          material: grass,
         },
         {
           key: LEVEL2,
-          material: sand,
+          material: brown,
         },
         {
           key: LEVEL1,
-          material: dirt2,
+          material: lightBrown,
         },
       ],
     };
