@@ -15,8 +15,8 @@ import Hexagons, { MAX_HEIGHT } from "../hexagons/Hexagons";
 import { ToneMapping } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 
-import Sign from "../models/items/Sign";
-import ArrowNav from "../models/items/ArrowNav";
+import Sign from "../models/Sign";
+import ArrowNav from "../models/ArrowNav";
 
 import { mapsElements } from "./utils";
 
@@ -109,11 +109,11 @@ const Scene = ({ handleBlur }) => {
     }
   }, [index]);
 
-  const { birdPath } = mapsElements[index];
+  const { bird } = mapsElements[index];
   const BirdComponent = useMemo(() => {
-    const Component = React.lazy(() => import(birdPath));
+    const Component = React.lazy(() => import(`../models/${bird}.jsx`));
     return Component;
-  }, [birdPath]);
+  }, [bird]);
 
   return (
     <>

@@ -9,7 +9,7 @@ import { a } from "@react-spring/three";
 
 import Scene from "./scene/Scene";
 
-import Text from "./models/items/Text";
+import Text from "./models/Text";
 import "./styles/style.css";
 
 const App = () => {

@@ -28,7 +28,7 @@ const tilePosition = (tileX, tileY) => {
 };
 
 const Hexagons = React.memo(({ i, j, elements }) => {
-  const { treePath, animalPath, texture } = elements;
+  const { tree, animal, texture } = elements;
   const initialState = {
     hexagons: {
       level5: HEXAGON,
@@ -90,14 +90,14 @@ const Hexagons = React.memo(({ i, j, elements }) => {
   }, [envMap]);
 
   const TreeComponent = useMemo(() => {
-    const Component = React.lazy(() => import(`${treePath}.jsx`));
+    const Component = React.lazy(() => import(`../models/${tree}.jsx`));
     return Component;
-  }, [treePath]);
+  }, [tree]);
 
   const AnimalComponent = useMemo(() => {
-    const Component = React.lazy(() => import(`${animalPath}.jsx`));
+    const Component = React.lazy(() => import(`../models/${animal}.jsx`));
     return Component;
-  }, [animalPath]);
+  }, [animal]);
 
   useEffect(() => {
     let counter = 0;
