@@ -28,7 +28,7 @@ const tilePosition = (tileX, tileY) => {
 };
 
 const Hexagons = React.memo(({ i, j, elements }) => {
-  const { tree, animal, texture } = elements;
+  const { tree, animal, flower, texture } = elements;
   const initialState = {
     hexagons: {
       level5: HEXAGON,
@@ -39,13 +39,15 @@ const Hexagons = React.memo(({ i, j, elements }) => {
     },
     treePositions: [],
     animalPositions: [],
+    flowerPositions: [],
     size: 1,
   };
 
   const envMap = useEnvironment({ files: "/textures/envmap.hdr" });
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { hexagons, size, treePositions, animalPositions } = state;
+  const { hexagons, size, treePositions, animalPositions, flowerPositions } =
+    state;
 
   const level1 = useRef(HEXAGON);
   const level2 = useRef(HEXAGON);
@@ -99,12 +101,19 @@ const Hexagons = React.memo(({ i, j, elements }) => {
     return Component;
   }, [animal]);
 
+  const FlowerComponent = useMemo(() => {
+    const Component = React.lazy(() => import(`../models/${flower}.jsx`));
+    return Component;
+  }, [animal]);
+
   useEffect(() => {
     let counter = 0;
 
     const simplex = new SimplexNoise();
     const newTreePositions = [];
     const newAnimalPositions = [];
+    const newFlowerPositions = [];
+
     for (let x = -i; x < i; x++) {
       for (let z = -j; z < j; z++) {
         const noise = (simplex.noise2D(x * 0.1, z * 0.1) + 1) * 0.5;
@@ -158,6 +167,10 @@ const Hexagons = React.memo(({ i, j, elements }) => {
           if (Math.random() > 0.9) {
             newAnimalPositions.push([newPosition.x, height, newPosition.y]);
           }
+
+          if (Math.random() > 0.8) {
+            newFlowerPositions.push([newPosition.x, height, newPosition.y]);
+          }
         } else if (height > LEVEL1_HEIGHT) {
           level1.current = BufferGeometryUtils.mergeGeometries([
             level1.current,
@@ -187,6 +200,7 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       payload: {
         treePositions: newTreePositions,
         animalPositions: newAnimalPositions,
+        flowerPositions: newFlowerPositions,
       },
     });
   }, [i, j]);
@@ -201,6 +215,14 @@ const Hexagons = React.memo(({ i, j, elements }) => {
           </Suspense>
         );
       })}
+      {flower &&
+        flowerPositions.map((position, i) => {
+          return (
+            <Suspense key={i} fallback={null}>
+              <FlowerComponent position={position} />;
+            </Suspense>
+          );
+        })}
       {animalPositions.map((position, i) => {
         return (
           <Suspense key={i} fallback={null}>

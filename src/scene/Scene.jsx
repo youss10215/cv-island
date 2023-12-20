@@ -21,7 +21,7 @@ import ArrowNav from "../models/ArrowNav";
 import { mapsElements } from "./utils";
 
 const defaultProps = {
-  backgrounSceneColor: "#d9e8f2",
+  backgrounSceneColor: "#d2edff",
   pointLightColor1: "#dbdbda",
   pointLightColor2: "#d9e8f2",
   pointLightIntensity: 4,

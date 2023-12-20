@@ -1,11 +1,5 @@
 export const mapsElements = [
   {
-    tree: 'PineTree',
-    bird: 'SpringBirds',
-    animal: 'Rabbit',
-    texture: 'spring'
-  },
-  {
     tree: 'PalmTree',
     bird: 'Seagulls',
     animal: 'Crab',
@@ -22,5 +16,11 @@ export const mapsElements = [
     bird: 'SnowlyOwl',
     animal: 'Penguin',
     texture: 'winter'
-  }
+  }, {
+    tree: 'PineTree',
+    bird: 'SpringBirds',
+    animal: 'Rabbit',
+    flower: 'Flower',
+    texture: 'spring'
+  },
 ];

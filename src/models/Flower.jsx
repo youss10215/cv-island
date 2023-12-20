@@ -3,8 +3,8 @@ import { useGLTF } from "@react-three/drei";
 import { useGraph } from "@react-three/fiber";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
-export const Flowers = (props) => {
-  const { scene, materials } = useGLTF("/models/wild/flowers.glb");
+export const Flower = (props) => {
+  const { scene, materials } = useGLTF("/models/wild/flower.glb");
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
 
@@ -32,6 +32,6 @@ export const Flowers = (props) => {
   );
 };
 
-useGLTF.preload("/models/wild/flowers.glb");
+useGLTF.preload("/models/wild/flower.glb");
 
-export default Flowers;
+export default Flower;
