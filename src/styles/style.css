@@ -1,6 +1,25 @@
+@font-face {
+  font-family: RobotoMono;
+  font-weight: 400;
+  src: url('./fonts/roboto-mono/RobotoMono-Regular.ttf') format('opentype')
+}
+
+@font-face {
+  font-family: RobotoMono;
+  font-weight: 500;
+  src: url('./fonts/roboto-mono/RobotoMono-Medium.ttf') format('opentype')
+}
+
+@font-face {
+  font-family: RobotoMono;
+  font-weight: 600;
+  src: url('./fonts/roboto-mono/RobotoMono-Bold.ttf') format('opentype')
+}
+
 html,
 body {
   margin: 0;
+  font-family: 'RobotoMono';
 }
 
 canvas {
@@ -12,13 +31,28 @@ canvas {
   filter: blur(5px);
 }
 
-body #root .description {
+body #root .container-description {
   position: absolute !important;
   pointer-events: none !important;
   top: 0;
 }
 
-.about-me {
+.description {
+  width: 180px;
+  text-align: center;
+}
+
+.description .title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.description .text {
+  font-size: 12px;
+}
+
+.sign-title {
   color: #ffffff;
   font-size: 28px;
   cursor: pointer;

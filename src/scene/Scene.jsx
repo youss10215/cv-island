@@ -29,19 +29,17 @@ const defaultProps = {
   pointLightPosition2: [16, 30, -24],
   birdPosition: [-7, 12, 6],
   signPosition: [-10.8, 0, 14.6],
-  aboutMePosition: [-11, 4.4, 14.8],
-  aboutMeRotation: [0, -0.6, 0],
+  signTitlePosition: [-11, 4.4, 14.8],
+  signTitleRotation: [0, -0.6, 0],
   arrowPosition: [11, 4, 26],
   arrowRotation: [1.95, -1.73, -1],
   sides: 15,
   seaColor: "#10579d",
 };
 
-const Scene = ({ handleBlur }) => {
+const Scene = ({ handleBlur, index, setIndex }) => {
   const lightRef1 = useRef();
   const lightRef2 = useRef();
-
-  const [index, setIndex] = useState(0);
 
   const {
     backgrounSceneColor,
@@ -53,8 +51,8 @@ const Scene = ({ handleBlur }) => {
     arrowPosition,
     birdPosition,
     signPosition,
-    aboutMePosition,
-    aboutMeRotation,
+    signTitlePosition,
+    signTitleRotation,
     arrowRotation,
     sides,
     seaColor,
@@ -107,9 +105,13 @@ const Scene = ({ handleBlur }) => {
     if (index === mapsElements.length - 1) {
       setIndex(0);
     }
-  }, [index]);
+  }, [index, setIndex]);
 
-  const { bird } = mapsElements[index];
+  const {
+    bird,
+    description: { title },
+  } = mapsElements[index];
+
   const BirdComponent = useMemo(() => {
     const Component = React.lazy(() => import(`../models/${bird}.jsx`));
     return Component;
@@ -148,17 +150,17 @@ const Scene = ({ handleBlur }) => {
       <color attach="background" args={[backgrounSceneColor]} />
       <PerspectiveCamera fov={45} />
       <Environment preset="sunset" />
-      {/* <Sign onClick={handleBlur} position={signPosition} />
+      <Sign onClick={handleBlur} position={signPosition} />
       <Html
-        rotation={aboutMeRotation}
-        position={aboutMePosition}
+        rotation={signTitleRotation}
+        position={signTitlePosition}
         transform
         occlude
       >
-        <div onClick={handleBlur} className="about-me">
-          Experience
+        <div onClick={handleBlur} className="sign-title">
+          {title}
         </div>
-      </Html> */}
+      </Html>
       <ArrowNav
         onClick={clickOnRightArrow}
         position={arrowPosition}
