@@ -16,7 +16,7 @@ const Description = ({ active, index }) => {
       toneMappingExposure: 0.8,
       cameraPosition: [-17, 9, 23],
       decriptionPosition: [0, 5.3, -0.1],
-      decriptionRotation: [1.5, 3.1, 0],
+      decriptionRotation: [1.7, 3.1, 0],
     });
 
   const mass = active ? 5 : 1;
@@ -37,7 +37,7 @@ const Description = ({ active, index }) => {
   const rotationZ = spring.to([0, 1], [5.4, 5.4]);
 
   const {
-    description: { title, text },
+    description: { title, text, marginTop },
   } = mapsElements[index];
 
   return (
@@ -66,8 +66,10 @@ const Description = ({ active, index }) => {
           occlude
           scale={0.2}
         >
-          <div className="title">{title}</div>
-          <div className="text">{text}</div>
+          <div className="title" style={{ marginTop }}>
+            {title}
+          </div>
+          <div className="text" dangerouslySetInnerHTML={{ __html: text }} />
         </Html>
       </a.mesh>
     </Canvas>

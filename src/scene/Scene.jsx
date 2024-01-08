@@ -24,7 +24,7 @@ const defaultProps = {
   backgrounSceneColor: "#d2edff",
   pointLightColor1: "#dbdbda",
   pointLightColor2: "#d9e8f2",
-  pointLightIntensity: 4,
+  pointLightIntensity: 6,
   pointLightPosition1: [-16, 20, 24],
   pointLightPosition2: [16, 30, -24],
   birdPosition: [-7, 12, 6],
