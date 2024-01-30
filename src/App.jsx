@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
-import { Stats } from "@react-three/drei";
-import { useControls } from "leva";
+import { CameraControls, Html, Stats } from "@react-three/drei";
+import { button, useControls } from "leva";
 
 import Scene from "./scene/Scene";
 import Description from "./description/Description";
@@ -10,9 +10,28 @@ import Description from "./description/Description";
 import "./styles/style.css";
 
 const App = () => {
+  const controls = useRef();
+  const meshFitCameraHome = useRef();
+
+  const intro = async () => {
+    controls.current.dolly(-22);
+    controls.current.smoothTime = 0.5;
+    controls.current.dolly(22, true);
+  };
+
+  useControls("dolly", {
+    in: button(() => {
+      controls.current.dolly(22, true);
+    }),
+    out: button(() => {
+      controls.current.smoothTime = 0.5;
+      controls.current.dolly(-22, true);
+    }),
+  });
+
   const { toneMappingExposure, cameraPosition } = useControls({
     toneMappingExposure: 0.8,
-    cameraPosition: [-17, 9, 23],
+    cameraPosition: [-17, 22, 23],
   });
 
   const [isBlurred, setIsBlurred] = useState(false);
@@ -23,6 +42,12 @@ const App = () => {
     setIsBlurred(!isBlurred);
     setActive(Number(!active));
   }, [isBlurred]);
+
+  // useEffect(() => {
+  //   if (controls.current) {
+  //     intro();
+  //   }
+  // }, [intro]);
 
   return (
     <>
@@ -40,6 +65,13 @@ const App = () => {
           outputEncoding: THREE.SRGBColorSpace,
         }}
       >
+        <CameraControls ref={controls} />
+        <Html className="title">
+          <div>
+            Youcef Ettaieb
+            <div className="subtitle">Front End Developer</div>
+          </div>
+        </Html>
         <Scene
           handleBlur={handleBlur}
           isBlurred={isBlurred}

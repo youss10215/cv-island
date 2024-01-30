@@ -37,6 +37,21 @@ body #root .container-description {
   top: 0;
 }
 
+.title {
+  position: absolute;
+  top: -310px;
+  left: -700px;
+  width: 210px;
+  text-align: center;
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.subtitle {
+  font-size: 16px;
+}
+
 .description {
   width: 180px;
   text-align: center;
@@ -85,7 +100,7 @@ body #root .container-description {
 
 /** Handle LEVA */
 
-.leva-c-kWgxhW-bCBHqk-fill-false {
+/* .leva-c-kWgxhW-bCBHqk-fill-false {
   left: 20px;
   top: 50px;
-}
+} */

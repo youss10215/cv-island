@@ -4,6 +4,8 @@ import {
   Html,
   OrbitControls,
   PerspectiveCamera,
+  Text,
+  Text3D,
   useEnvironment,
   useHelper,
   useTexture,
@@ -119,6 +121,9 @@ const Scene = ({ handleBlur, index, setIndex }) => {
 
   return (
     <>
+      <OrbitControls target={[0, 0, 0]} />
+      <PerspectiveCamera fov={45} />
+      <Environment preset="sunset" />
       <Hexagons i={sides} j={sides} elements={mapsElements[index]} />
       <Suspense fallback={null}>
         <BirdComponent position={birdPosition} />;
@@ -146,10 +151,7 @@ const Scene = ({ handleBlur, index, setIndex }) => {
         color={new THREE.Color("#ffe8bc").convertSRGBToLinear()}
         intensity={0.4}
       />
-      <OrbitControls target={[0, 0, 0]} />
       <color attach="background" args={[backgrounSceneColor]} />
-      <PerspectiveCamera fov={45} />
-      <Environment preset="sunset" />
       <Sign onClick={handleBlur} position={signPosition} />
       <Html
         rotation={signTitleRotation}
