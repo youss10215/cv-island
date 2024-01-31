@@ -18,7 +18,6 @@ import { ToneMapping } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 
 import Sign from "../models/Sign";
-import ArrowNav from "../models/ArrowNav";
 
 import { mapsElements } from "./utils";
 
@@ -109,6 +108,14 @@ const Scene = ({ handleBlur, index, setIndex }) => {
     }
   }, [index, setIndex]);
 
+  const clickOnLeftArrow = useCallback(() => {
+    setIndex(index - 1);
+
+    if (index === 0) {
+      setIndex(mapsElements.length - 1);
+    }
+  }, [index, setIndex]);
+
   const {
     bird,
     description: { title },
@@ -163,12 +170,14 @@ const Scene = ({ handleBlur, index, setIndex }) => {
           {title}
         </div>
       </Html>
-      <ArrowNav
-        onClick={clickOnRightArrow}
-        position={arrowPosition}
-        rotation={arrowRotation}
-        whiteMaterial={whiteMaterial}
-      />
+      <Html>
+        <div onClick={clickOnLeftArrow}>
+          <img className="arrow arrow-left" src="/svgs/arrow-left.svg" />
+        </div>
+        <div onClick={clickOnRightArrow}>
+          <img className="arrow arrow-right" src="/svgs/arrow-right.svg" />
+        </div>
+      </Html>
       <mesh
         material={seaTexture}
         position={[0, MAX_HEIGHT * 0.1, 0]}

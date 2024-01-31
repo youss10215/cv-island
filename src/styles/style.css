@@ -39,7 +39,7 @@ body #root .container-description {
 
 .title {
   position: absolute;
-  top: -310px;
+  top: -340px;
   left: -700px;
   width: 210px;
   text-align: center;
@@ -95,6 +95,21 @@ body #root .container-description {
   color: #ffffff;
   font-size: 28px;
   cursor: pointer;
+}
+
+.arrow {
+  position: absolute;
+  width: 45px;
+  top: 0px;
+  cursor: pointer;
+}
+
+.arrow-left {
+  right: 510px;
+}
+
+.arrow-right {
+  left: 510px;
 }
 
 
