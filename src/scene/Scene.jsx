@@ -4,21 +4,19 @@ import {
   Html,
   OrbitControls,
   PerspectiveCamera,
-  Text,
-  Text3D,
   useEnvironment,
   useHelper,
   useTexture,
 } from "@react-three/drei";
 import * as THREE from "three";
 import { useControls } from "leva";
-
-import Hexagons, { MAX_HEIGHT } from "../hexagons/Hexagons";
+import { useSpring } from "react-spring";
 import { ToneMapping } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
+import { a } from "@react-spring/three";
 
+import Hexagons, { MAX_HEIGHT } from "../hexagons/Hexagons";
 import Sign from "../models/Sign";
-
 import { mapsElements } from "./utils";
 
 const defaultProps = {
@@ -49,12 +47,10 @@ const Scene = ({ handleBlur, index, setIndex }) => {
     pointLightIntensity,
     pointLightPosition1,
     pointLightPosition2,
-    arrowPosition,
     birdPosition,
     signPosition,
     signTitlePosition,
     signTitleRotation,
-    arrowRotation,
     sides,
     seaColor,
   } = useControls(defaultProps);
@@ -66,7 +62,6 @@ const Scene = ({ handleBlur, index, setIndex }) => {
   const [waterTexture] = useTexture(["/textures/water.png"]);
   const [dirtTexture] = useTexture(["/textures/dirt.jpg"]);
   const [dirt2Texture] = useTexture(["/textures/mapFloor.jpg"]);
-  const [white] = useTexture(["/textures/white.jpg"]);
 
   const seaTexture = new THREE.MeshPhysicalMaterial({
     envMap,
@@ -87,6 +82,7 @@ const Scene = ({ handleBlur, index, setIndex }) => {
     map: dirtTexture,
     envMapIntensity: 0.2,
     side: THREE.DoubleSide,
+    transparent: true,
   });
 
   const mapFloorTexture = new THREE.MeshPhysicalMaterial({
@@ -96,11 +92,26 @@ const Scene = ({ handleBlur, index, setIndex }) => {
     side: THREE.DoubleSide,
   });
 
-  const whiteMaterial = new THREE.MeshPhysicalMaterial({
-    map: white,
+  const [isBouncing, setIsBouncing] = useState(false);
+  const [isRight, setIsRight] = useState(false);
+
+  const triggerBounce = () => {
+    setIsBouncing(true);
+    setTimeout(() => setIsBouncing(false), 200);
+  };
+
+  const data = useSpring({
+    from: { x: 0, z: 0 },
+    to: {
+      x: isBouncing ? (isRight ? 5 : -5) : 0,
+      z: isBouncing ? (isRight ? 4 : -4) : 0,
+    },
+    config: { tension: 190, friction: 14 },
   });
 
   const clickOnRightArrow = useCallback(() => {
+    setIsRight(true);
+    triggerBounce();
     setIndex(index + 1);
 
     if (index === mapsElements.length - 1) {
@@ -109,6 +120,8 @@ const Scene = ({ handleBlur, index, setIndex }) => {
   }, [index, setIndex]);
 
   const clickOnLeftArrow = useCallback(() => {
+    setIsRight(false);
+    triggerBounce();
     setIndex(index - 1);
 
     if (index === 0) {
@@ -130,46 +143,8 @@ const Scene = ({ handleBlur, index, setIndex }) => {
     <>
       <OrbitControls target={[0, 0, 0]} />
       <PerspectiveCamera fov={45} />
-      <Environment preset="sunset" />
-      <Hexagons i={sides} j={sides} elements={mapsElements[index]} />
-      <Suspense fallback={null}>
-        <BirdComponent position={birdPosition} />;
-      </Suspense>
-      <pointLight
-        ref={lightRef1}
-        color={new THREE.Color(pointLightColor1).convertSRGBToLinear()}
-        intensity={pointLightIntensity}
-        distance={200}
-        position={pointLightPosition1}
-        castShadow
-        shadow-mapSize-height={512}
-        shadow-mapSize-width={512}
-        shadow-camera-near={0.5}
-        shadow-camera-far={500}
-      />
-      <pointLight
-        ref={lightRef2}
-        color={new THREE.Color(pointLightColor2).convertSRGBToLinear()}
-        intensity={pointLightIntensity}
-        distance={200}
-        position={pointLightPosition2}
-      />
-      <ambientLight
-        color={new THREE.Color("#ffe8bc").convertSRGBToLinear()}
-        intensity={0.4}
-      />
       <color attach="background" args={[backgrounSceneColor]} />
-      <Sign onClick={handleBlur} position={signPosition} />
-      <Html
-        rotation={signTitleRotation}
-        position={signTitlePosition}
-        transform
-        occlude
-      >
-        <div onClick={handleBlur} className="sign-title">
-          {title}
-        </div>
-      </Html>
+      <Environment preset="sunset" />
       <Html>
         <div onClick={clickOnLeftArrow}>
           <img className="arrow arrow-left" src="/svgs/arrow-left.svg" />
@@ -178,32 +153,78 @@ const Scene = ({ handleBlur, index, setIndex }) => {
           <img className="arrow arrow-right" src="/svgs/arrow-right.svg" />
         </div>
       </Html>
-      <mesh
-        material={seaTexture}
-        position={[0, MAX_HEIGHT * 0.1, 0]}
-        castShadow={true}
-        receiveShadow={true}
+      <a.mesh
+        position-x={data.x}
+        position-z={data.z}
+        visible={isBouncing ? false : true}
       >
-        <cylinderGeometry args={[sides + 2, sides + 2, MAX_HEIGHT * 0.2, 50]} />
-      </mesh>
-      <mesh
-        material={mapContainerTexture}
-        position={[0, MAX_HEIGHT * 0.125, 0]}
-      >
-        <cylinderGeometry
-          args={[sides + 2.1, sides + 2.1, MAX_HEIGHT * 0.25, 50, 1, true]}
+        <Hexagons i={sides} j={sides} elements={mapsElements[index]} />
+
+        <Suspense fallback={null}>
+          <BirdComponent position={birdPosition} />;
+        </Suspense>
+        <pointLight
+          ref={lightRef1}
+          color={new THREE.Color(pointLightColor1).convertSRGBToLinear()}
+          intensity={pointLightIntensity}
+          distance={200}
+          position={pointLightPosition1}
+          castShadow
+          shadow-mapSize-height={512}
+          shadow-mapSize-width={512}
+          shadow-camera-near={0.5}
+          shadow-camera-far={500}
         />
-      </mesh>
-      <mesh
-        material={mapFloorTexture}
-        position={[0, -MAX_HEIGHT * 0.05, 0]}
-        receiveShadow
-      >
-        <cylinderGeometry
-          args={[sides + 3.5, sides + 3.5, MAX_HEIGHT * 0.1, 50]}
+        <pointLight
+          ref={lightRef2}
+          color={new THREE.Color(pointLightColor2).convertSRGBToLinear()}
+          intensity={pointLightIntensity}
+          distance={200}
+          position={pointLightPosition2}
         />
-      </mesh>
-      {/* <EffectComposer> */}
+        <ambientLight
+          color={new THREE.Color("#ffe8bc").convertSRGBToLinear()}
+          intensity={0.4}
+        />
+        {/* <Sign onClick={handleBlur} position={signPosition} /> */}
+        {/* <Html
+          rotation={signTitleRotation}
+          position={signTitlePosition}
+          transform
+          occlude
+        >
+          <div onClick={handleBlur} className="sign-title">
+            {title}
+          </div>
+        </Html> */}
+        <mesh
+          material={seaTexture}
+          position={[0, MAX_HEIGHT * 0.1, 0]}
+          castShadow={true}
+          receiveShadow={true}
+        >
+          <cylinderGeometry
+            args={[sides + 2, sides + 2, MAX_HEIGHT * 0.2, 50]}
+          />
+        </mesh>
+        <mesh
+          material={mapContainerTexture}
+          position={[0, MAX_HEIGHT * 0.125, 0]}
+        >
+          <cylinderGeometry
+            args={[sides + 2.1, sides + 2.1, MAX_HEIGHT * 0.25, 50, 1, true]}
+          />
+        </mesh>
+        <mesh
+          material={mapFloorTexture}
+          position={[0, -MAX_HEIGHT * 0.05, 0]}
+          receiveShadow
+        >
+          <cylinderGeometry
+            args={[sides + 3.5, sides + 3.5, MAX_HEIGHT * 0.1, 50]}
+          />
+        </mesh>
+      </a.mesh>
       <ToneMapping
         blendFunction={BlendFunction.NORMAL} // blend mode
         adaptive={true} // toggle adaptive luminance map usage
@@ -213,7 +234,6 @@ const Scene = ({ handleBlur, index, setIndex }) => {
         averageLuminance={2.0} // average luminance
         adaptationRate={1.0} // luminance adaptation rate
       />
-      {/* </EffectComposer> */}
     </>
   );
 };
