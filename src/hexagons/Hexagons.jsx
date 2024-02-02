@@ -133,7 +133,10 @@ const Hexagons = React.memo(({ i, j, elements }) => {
           continue;
         }
 
-        hexagonsPositions[x + 15][z + 15] = height;
+        hexagonsPositions[x + 15][z + 15] = {
+          height,
+          position: newPosition,
+        };
 
         const hexagonStone = new THREE.CylinderGeometry(
           1,
