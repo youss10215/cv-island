@@ -112,6 +112,30 @@ body #root .container-description {
   left: 510px;
 }
 
+.cell {
+  width: 25px;
+  height: 25px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grid {
+  background: #000;
+  display: flex;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /** Handle LEVA */
 

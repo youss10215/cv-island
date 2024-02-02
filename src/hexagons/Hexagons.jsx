@@ -114,9 +114,13 @@ const Hexagons = React.memo(({ i, j, elements }) => {
     const newAnimalPositions = [];
     const newFlowerPositions = [];
 
+    const hexagonsPositions = {};
+
     for (let x = -i; x < i; x++) {
+      hexagonsPositions[x + 15] = {};
       for (let z = -j; z < j; z++) {
         const noise = (simplex.noise2D(x * 0.1, z * 0.1) + 1) * 0.5;
+
         const height = Math.pow(noise, 1.5) * MAX_HEIGHT;
 
         const newPosition = tilePosition(x, z);
@@ -128,6 +132,8 @@ const Hexagons = React.memo(({ i, j, elements }) => {
         if (newPosition.length() > i + 1) {
           continue;
         }
+
+        hexagonsPositions[x + 15][z + 15] = height;
 
         const hexagonStone = new THREE.CylinderGeometry(
           1,
@@ -181,6 +187,8 @@ const Hexagons = React.memo(({ i, j, elements }) => {
         counter++;
       }
     }
+
+    console.log("🚀 ~ useEffect ~ hexagonsPositions", hexagonsPositions);
 
     dispatch({
       type: SET_HEGAGONS,
