@@ -113,8 +113,8 @@ body #root .container-description {
 }
 
 .cell {
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   overflow: hidden;
   background-color: #ffffff;
 }

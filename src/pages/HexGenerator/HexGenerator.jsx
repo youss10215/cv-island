@@ -1,25 +1,27 @@
-import React from "react";
 import * as summerJSON from "../../conf/islands/summer.json";
 
 const getCellClass = (hex) => {
   if (hex > 8) {
-    return "brown";
+    return "#6F3620";
   }
 
   if (hex > 7) {
-    return "green";
+    return "#92D3A0";
   }
 
   if (hex > 5) {
-    // hexadecimal color sand
-    return "#f4a460";
+    return "#D6E4D9";
   }
 
   if (hex > 3) {
-    return "yellow";
+    return "#CABBA1";
   }
 
-  return "blue";
+  if (hex > 1.6) {
+    return "#E8E7E6";
+  }
+
+  return "cyan";
 };
 
 const HexGrid = () => {
