@@ -117,7 +117,6 @@ const Hexagons = React.memo(({ i, j, elements }) => {
     const hexagonsPositions = {};
 
     for (let x = -i; x < i; x++) {
-      hexagonsPositions[x + 15] = {};
       for (let z = -j; z < j; z++) {
         const noise = (simplex.noise2D(x * 0.1, z * 0.1) + 1) * 0.5;
 
@@ -133,7 +132,8 @@ const Hexagons = React.memo(({ i, j, elements }) => {
           continue;
         }
 
-        hexagonsPositions[x + 15][z + 15] = {
+        hexagonsPositions[`${x + 15}-${z + 15}`] = {
+          id: `${x + 15}-${z + 15}`,
           height,
           position: newPosition,
         };

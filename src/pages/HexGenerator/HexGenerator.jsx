@@ -1,3 +1,4 @@
+import { useState } from "react";
 import * as summerJSON from "../../conf/islands/summer.json";
 
 const getCellColor = (height) => {
@@ -33,34 +34,86 @@ const getCellPosition = (position) => {
   };
 };
 
-const HexGrid = () => {
-  const grid = Object.values(summerJSON).map((row) => {
-    return Object.values(row).map((cell, j) => {
-      return Object.values(cell).map(({ height, position }, k) => {
-        return (
-          <div
-            className="cell"
-            style={{
-              background: getCellColor(height),
-              ...getCellPosition(position),
-            }}
-            key={`${j}-${k}`}
-          >
-            {height.toFixed(2)}
-          </div>
-        );
-      });
-    });
+const replaceElements = (obj, arr) => {
+  arr.forEach((item) => {
+    if (obj.hasOwnProperty(item.id)) {
+      obj[item.id] = item;
+    }
   });
-  return grid;
 };
 
-const HexGenerator = () => (
-  <div className="container">
-    <div className="grid">
+const HexGrid = () => {
+  const [items, setItems] = useState({ ...summerJSON }.default);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [value, setValue] = useState(0);
+
+  const onChange = (e) => {
+    e.currentTarget && setValue(e.currentTarget.value);
+  };
+
+  const onSubmit = () => {
+    const newItems = selectedItems.map((item) => {
+      return { ...item, height: Number.parseFloat(value) };
+    });
+
+    const updatedItems = { ...items };
+    replaceElements(updatedItems, newItems);
+    setItems(updatedItems);
+    setSelectedItems([]);
+  };
+
+  const isSelectedCell = (cellId) => {
+    return !!selectedItems.find((e) => e.id === cellId);
+  };
+
+  const onClick = (cell) => {
+    if (!isSelectedCell(cell.id)) {
+      setSelectedItems([...selectedItems, cell]);
+      return;
+    }
+
+    const newSelectedItems = selectedItems.filter((e) => e.id !== cell.id);
+    setSelectedItems(newSelectedItems);
+  };
+
+  const grid = Object.values(items).map((cell) => {
+    const { id, height, position } = cell;
+    return (
+      <div
+        className="cell"
+        style={{
+          background: getCellColor(height),
+          border: isSelectedCell(id) ? "1px solid red" : "none",
+          cursor: "pointer",
+          ...getCellPosition(position),
+        }}
+        key={cell.id}
+        onClick={() => onClick(cell)}
+      >
+        {height.toFixed(2)}
+      </div>
+    );
+  });
+
+  return (
+    <>
+      <div className="grid">{grid}</div>
+      <div className="cell-input">
+        <input type="number" value={value} onChange={(e) => onChange(e)} />
+        <button className="submit-button" onClick={onSubmit}>
+          OK
+        </button>
+      </div>
+    </>
+  );
+};
+
+const HexGenerator = () => {
+  return (
+    <div className="container">
       <HexGrid />
     </div>
-  </div>
-);
+  );
+};
 
 export default HexGenerator;
