@@ -7,6 +7,7 @@ import SimplexNoise from "https://cdn.skypack.dev/simplex-noise@3.0.0";
 
 import HexagonsMeshes from "../hexagons-meshes/HexagonsMeshes";
 import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
+import * as summerJSON from "../conf/islands/summer.json";
 
 export const MAX_HEIGHT = 10;
 
@@ -120,8 +121,6 @@ const Hexagons = React.memo(({ i, j, elements }) => {
       for (let z = -j; z < j; z++) {
         const noise = (simplex.noise2D(x * 0.1, z * 0.1) + 1) * 0.5;
 
-        const height = Math.pow(noise, 1.5) * MAX_HEIGHT;
-
         const newPosition = tilePosition(x, z);
 
         if (z === j - 1 && x === i - 1) {
@@ -131,6 +130,10 @@ const Hexagons = React.memo(({ i, j, elements }) => {
         if (newPosition.length() > i + 1) {
           continue;
         }
+
+        const formatedHexagons = { ...summerJSON }.default;
+        const height = formatedHexagons[`${x + 15}-${z + 15}`].height;
+        // const height = Math.pow(noise, 1.5) * MAX_HEIGHT;
 
         hexagonsPositions[`${x + 15}-${z + 15}`] = {
           id: `${x + 15}-${z + 15}`,
@@ -148,6 +151,8 @@ const Hexagons = React.memo(({ i, j, elements }) => {
         );
 
         hexagonStone.translate(newPosition.x, height * 0.5, newPosition.y);
+
+        // hexagonStone.translate(newPosition.x, height * 0.5, newPosition.y);
 
         if (height > LEVEL5_HEIGHT) {
           level5.current = BufferGeometryUtils.mergeGeometries([

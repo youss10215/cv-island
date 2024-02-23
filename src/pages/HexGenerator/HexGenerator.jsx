@@ -3,23 +3,23 @@ import * as summerJSON from "../../conf/islands/summer.json";
 
 const getCellColor = (height) => {
   if (height > 8) {
-    return "#6F3620";
+    return "#82432D";
   }
 
   if (height > 7) {
-    return "#92D3A0";
+    return "#48A84D";
   }
 
   if (height > 5) {
-    return "#D6E4D9";
+    return "#B8CBA5";
   }
 
   if (height > 3) {
-    return "#CABBA1";
+    return "#CAAA78";
   }
 
   if (height > 2) {
-    return "#E8E7E6";
+    return "#D6E4D9";
   }
 
   return "cyan";
@@ -46,6 +46,7 @@ const HexGrid = () => {
   const [items, setItems] = useState({ ...summerJSON }.default);
   const [selectedItems, setSelectedItems] = useState([]);
   const [value, setValue] = useState(0);
+  const [updatedItemsText, setUpdatedItemsText] = useState("");
 
   const onChange = (e) => {
     e.currentTarget && setValue(e.currentTarget.value);
@@ -60,6 +61,20 @@ const HexGrid = () => {
     replaceElements(updatedItems, newItems);
     setItems(updatedItems);
     setSelectedItems([]);
+
+    const updatedItemsJson = JSON.stringify(updatedItems, null, 2);
+    setUpdatedItemsText(updatedItemsJson);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(updatedItemsText)
+      .then(() => {
+        alert("C'est bien collé chef!");
+      })
+      .catch((error) => {
+        alert("C'est pas bien collé chef!");
+      });
   };
 
   const isSelectedCell = (cellId) => {
@@ -99,10 +114,21 @@ const HexGrid = () => {
     <>
       <div className="grid">{grid}</div>
       <div className="cell-input">
-        <input type="number" value={value} onChange={(e) => onChange(e)} />
-        <button className="submit-button" onClick={onSubmit}>
-          OK
-        </button>
+        <div>
+          <input type="number" value={value} onChange={(e) => onChange(e)} />
+          <button className="submit-button" onClick={onSubmit}>
+            OK
+          </button>
+        </div>
+        <div className="updated-items">
+          <h3>Updated Json</h3>
+          <div className="updated-json">
+            <textarea value={updatedItemsText} readOnly rows={10} cols={50} />
+            <button className="copy-button" onClick={copyToClipboard}>
+              Copy
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
