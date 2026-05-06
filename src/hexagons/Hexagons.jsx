@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { useEnvironment } from "@react-three/drei";
 
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import SimplexNoise from "https://cdn.skypack.dev/simplex-noise@3.0.0";
+import SimplexNoise from 'https://cdn.jsdelivr.net/npm/simplex-noise@3.0.0/dist/esm/simplex-noise.js';
 
 import HexagonsMeshes from "../hexagons-meshes/HexagonsMeshes";
 import reducer, { SET_HEGAGONS, SET_SIZE, SET_POSITION } from "./reducer";
